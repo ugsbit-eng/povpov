@@ -1,4 +1,3 @@
-import TopBanner from "@/components/sections/top-banner";
 import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Image from "next/image";
@@ -7,7 +6,6 @@ import { ChevronRight } from "lucide-react";
 export default function Guide2Page() {
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
-      <TopBanner />
       
       <div className="pt-[72px]">
         <Navigation />
