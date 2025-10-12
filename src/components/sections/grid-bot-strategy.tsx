@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useReveal } from "@/hooks/useReveal";
 
 const GridBotStrategySection = () => {
-  const imageRef = useReveal();
-  const textRef = useReveal();
+  const imageRef = useReveal<HTMLDivElement>();
+  const textRef = useReveal<HTMLDivElement>();
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-16 xl:gap-24 py-16">

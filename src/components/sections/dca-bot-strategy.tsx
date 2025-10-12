@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useReveal } from "@/hooks/useReveal";
 
 const DcaBotStrategy = () => {
-  const textRef = useReveal();
-  const imageRef = useReveal();
+  const textRef = useReveal<HTMLDivElement>();
+  const imageRef = useReveal<HTMLDivElement>();
 
   return (
     <div className="py-12 md:py-20">

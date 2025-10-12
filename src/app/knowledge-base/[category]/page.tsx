@@ -6,14 +6,15 @@ import { getCategory, getCategoryArticles } from "@/lib/kb-content";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
-  const category = getCategory(params.category);
-  
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
+  const resolvedParams = await params;
+  const category = getCategory(resolvedParams.category);
+
   if (!category) {
     notFound();
   }
 
-  const articles = getCategoryArticles(params.category);
+  const articles = getCategoryArticles(resolvedParams.category);
 
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
@@ -23,7 +24,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
       <div className="container mx-auto px-6 py-12">
         <div className="flex gap-8">
-          <KBSidebar currentCategory={params.category} />
+          <KBSidebar currentCategory={resolvedParams.category} />
           
           <div className="flex-1 max-w-4xl">
             <KBBreadcrumbs 
@@ -44,7 +45,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
               {articles.map((article) => (
                 <Link
                   key={article.slug}
-                  href={`/knowledge-base/${params.category}/${article.slug}`}
+                  href={`/knowledge-base/${resolvedParams.category}/${article.slug}`}
                   className="group bg-background-secondary border border-border-subtle rounded-2xl p-6 hover:border-primary-green/30 hover:shadow-[0_0_30px_rgba(0,255,127,0.1)] transition-all duration-300"
                 >
                   <div className="flex items-start justify-between gap-4">

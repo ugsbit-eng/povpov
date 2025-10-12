@@ -5,8 +5,8 @@ import { useReveal } from "@/hooks/useReveal";
 import { motion } from "framer-motion";
 
 const JoinRevolutionSection = () => {
-  const textRef = useReveal();
-  const imageRef = useReveal();
+  const textRef = useReveal<HTMLDivElement>();
+  const imageRef = useReveal<HTMLDivElement>();
 
   return (
     <section className="relative overflow-hidden bg-background-primary py-[100px]">

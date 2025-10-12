@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { useReveal } from "@/hooks/useReveal";
 
 const OtherTradingTools = () => {
-  const textRef = useReveal();
-  const imageRef = useReveal();
+  const textRef = useReveal<HTMLDivElement>();
+  const imageRef = useReveal<HTMLDivElement>();
 
   return (
     <div className="flex flex-col items-center justify-center md:flex-row md:gap-8 lg:gap-16">
