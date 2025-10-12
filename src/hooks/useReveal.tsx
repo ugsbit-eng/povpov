@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-export function useReveal(className = "reveal") {
-  const ref = useRef<HTMLElement | null>(null);
+export function useReveal<T extends HTMLElement = HTMLElement>(className = "reveal") {
+  const ref = useRef<T | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;

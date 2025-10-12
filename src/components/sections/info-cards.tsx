@@ -5,7 +5,7 @@ import { useReveal } from "@/hooks/useReveal";
 import { motion } from "framer-motion";
 
 export default function InfoCards() {
-  const cardsRef = useReveal();
+  const cardsRef = useReveal<HTMLDivElement>();
 
   return (
     <section className="bg-background-primary py-20 lg:py-28">

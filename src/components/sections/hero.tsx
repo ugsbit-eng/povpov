@@ -6,10 +6,10 @@ import { useReveal } from "@/hooks/useReveal";
 import { motion } from "framer-motion";
 
 const HeroSection = () => {
-  const headingRef = useReveal();
-  const paragraphRef = useReveal();
-  const buttonRef = useReveal();
-  const imageRef = useReveal();
+  const headingRef = useReveal<HTMLDivElement>();
+  const paragraphRef = useReveal<HTMLDivElement>();
+  const buttonRef = useReveal<HTMLDivElement>();
+  const imageRef = useReveal<HTMLDivElement>();
 
   return (
     <section className="relative overflow-hidden bg-[#0a1929] pt-[110px] pb-[120px] lg:pt-[130px] lg:pb-[140px]">
