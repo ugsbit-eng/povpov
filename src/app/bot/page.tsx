@@ -1,5 +1,4 @@
 "use client";
-import TopBanner from "@/components/sections/top-banner";
 import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import BotPanel from "@/components/BotPanel";
@@ -7,7 +6,6 @@ import BotPanel from "@/components/BotPanel";
 export default function BotPage() {
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
-      <TopBanner />
       
       <div className="pt-[72px]">
         <Navigation />
