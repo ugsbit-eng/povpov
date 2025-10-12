@@ -1,0 +1,333 @@
+---
+title: "System Requirements"
+description: "OS, recommended VPS specs, and browser compatibility"
+author: "P.O.V Team"
+updatedAt: "January 2025"
+version: "1.0"
+tags: ["requirements", "hardware"]
+readTime: "3 min read"
+---
+
+# System Requirements
+
+P.O.V Sniper BOT is designed to run on modest hardware, but optimal performance requires meeting these specifications.
+
+## Minimum Requirements
+
+### Desktop / Laptop
+
+**Operating System:**
+- Windows 10 or newer (64-bit)
+- macOS 11 (Big Sur) or newer
+- Linux (Ubuntu 20.04+, Debian 11+, or equivalent)
+
+**Hardware:**
+- **CPU**: Dual-core processor (Intel Core i3 / AMD Ryzen 3 or equivalent)
+- **RAM**: 2 GB available memory
+- **Storage**: 500 MB free disk space
+- **Internet**: Stable broadband connection (10 Mbps+ recommended)
+
+**Browser** (for web interface):
+- Chrome 90+ (recommended)
+- Firefox 88+
+- Edge 90+
+- Safari 14+ (macOS only)
+
+### Mobile Monitoring (View-Only)
+
+The bot cannot run on mobile, but you can monitor via web interface:
+
+- iOS 14+ (Safari or Chrome)
+- Android 10+ (Chrome)
+
+Telegram notifications work on all mobile platforms.
+
+## Recommended Specifications
+
+For optimal performance and multiple strategies:
+
+**Hardware:**
+- **CPU**: Quad-core processor (Intel Core i5 / AMD Ryzen 5)
+- **RAM**: 4-8 GB
+- **Storage**: 2 GB SSD (faster database operations)
+- **Internet**: 50 Mbps+ with low latency (<50ms to Solana RPC)
+
+**Why these specs?**
+- Multiple strategies = more CPU
+- Real-time orderflow analysis = more RAM
+- Fast database queries = SSD helpful
+- Low latency = faster trade execution
+
+## VPS Deployment (Recommended for 24/7 Operation)
+
+Running the bot on a Virtual Private Server ensures uninterrupted operation.
+
+### Entry-Level VPS
+
+**Suitable for**: 1-3 active strategies, occasional trading
+
+- **Provider**: DigitalOcean Droplet, AWS EC2 t3.micro, Vultr
+- **Specs**: 
+  - 1 vCPU
+  - 2 GB RAM
+  - 50 GB SSD
+  - 2 TB transfer
+- **Cost**: ~$10-15/month
+- **Location**: Choose region closest to Solana RPC provider
+  - US East (AWS us-east-1) for Helius
+  - US West for QuickNode
+  - Europe (Frankfurt) for Triton EU
+
+### Mid-Tier VPS
+
+**Suitable for**: 5-10 active strategies, active trading
+
+- **Specs**:
+  - 2 vCPUs
+  - 4 GB RAM
+  - 80 GB SSD
+- **Cost**: ~$20-30/month
+- **Providers**: AWS EC2 t3.small, DigitalOcean, Linode
+
+### High-Performance VPS
+
+**Suitable for**: Sniper mode, high-frequency trading, 10+ strategies
+
+- **Specs**:
+  - 4+ vCPUs
+  - 8 GB RAM
+  - 160 GB SSD
+  - Dedicated CPU (not shared)
+- **Cost**: ~$40-80/month
+- **Providers**: AWS EC2 c6g.xlarge, dedicated Vultr, Hetzner
+
+## Network Requirements
+
+### Internet Connection
+
+**Minimum:**
+- 10 Mbps download
+- 5 Mbps upload
+- Stable connection (no frequent dropouts)
+
+**Recommended:**
+- 50+ Mbps download
+- 10+ Mbps upload
+- Low latency (<50ms) to Solana RPC
+- Wired connection preferred over WiFi
+
+**Why it matters:**
+- Bot makes 100+ API calls per minute during active trading
+- Orderflow analysis requires real-time mempool monitoring
+- Network hiccups can cause missed opportunities
+
+### Latency Considerations
+
+Test your latency to Solana mainnet:
+
+```bash
+# Test latency to Solana RPC
+ping api.mainnet-beta.solana.com
+
+# Ideal: <30ms
+# Acceptable: 30-100ms
+# Poor: >100ms (consider VPS closer to validators)
+```
+
+**Geographic optimization:**
+- Most Solana validators are in US/Europe
+- Asia-Pacific users may experience 100-200ms latency
+- Consider a US-based VPS if you're >150ms away
+
+## RPC Provider Requirements
+
+P.O.V Sniper BOT requires a Solana RPC endpoint.
+
+### Free Tier (Not Recommended for Production)
+
+- Solana public RPC (`https://api.mainnet-beta.solana.com`)
+- **Rate limit**: 100 requests/10 seconds
+- **Sufficient for**: Testing, small strategies
+- **Issues**: Rate limiting, slower responses, no priority support
+
+### Recommended RPC Providers
+
+#### Helius (Best for Most Users)
+
+- **Free tier**: 100k requests/day
+- **Paid plans**: From $49/month (1M requests/day)
+- **Pros**: Excellent WebSocket support, low latency, great docs
+- **Cons**: Can be expensive at scale
+
+#### QuickNode
+
+- **Free trial**: 10k requests/day
+- **Paid plans**: From $49/month
+- **Pros**: Simple setup, good performance
+- **Cons**: WebSocket on higher tiers only
+
+#### Triton (Best for High-Frequency)
+
+- **No free tier**
+- **Paid**: From $100/month
+- **Pros**: Lowest latency, dedicated infrastructure
+- **Cons**: More expensive, requires commitment
+
+**Setup guide**: See [API Keys & RPC](/knowledge-base/installation/api-keys)
+
+## Browser Requirements
+
+The bot's web UI requires a modern browser:
+
+**Recommended:**
+- **Chrome 90+** (best compatibility)
+- Hardware acceleration enabled
+- JavaScript enabled
+- Cookies enabled (for session management)
+- Pop-ups allowed (for wallet connection)
+
+**Not supported:**
+- Internet Explorer (any version)
+- Opera Mini
+- Browsers with JavaScript disabled
+
+## Wallet Requirements
+
+**Supported:**
+- Phantom wallet (browser extension or mobile)
+- Solflare (browser extension)
+- Ledger (via Solflare)
+- Direct keypair (for VPS deployments)
+
+**Browser Wallet Requirements:**
+- Latest version of wallet extension
+- WebAuthn support (for hardware wallet)
+- Clipboard access permission (for transaction signing)
+
+## Port Requirements
+
+If running on VPS, ensure these ports are open:
+
+```
+3000: Web UI (HTTP)
+3001: WebSocket (real-time updates)
+443: HTTPS (if using SSL)
+```
+
+Configure firewall:
+
+```bash
+# UFW (Ubuntu)
+sudo ufw allow 3000/tcp
+sudo ufw allow 3001/tcp
+sudo ufw allow 443/tcp
+
+# Firewalld (CentOS/RHEL)
+firewall-cmd --permanent --add-port=3000/tcp
+firewall-cmd --reload
+```
+
+## Storage Requirements
+
+### Initial Installation
+
+- Bot binary/Docker image: ~200 MB
+- Node modules/dependencies: ~150 MB
+- Configuration files: <1 MB
+
+**Total**: ~500 MB
+
+### Growing Storage Needs
+
+The bot stores:
+- Trade history (database)
+- Logs (rotated daily)
+- Cached market data
+
+**Typical growth**:
+- Light usage: +10 MB/month
+- Active trading: +50-100 MB/month
+- Heavy usage (sniper mode): +200-500 MB/month
+
+**Recommended**: 2 GB initial + 500 MB buffer
+
+## Performance Benchmarks
+
+Expected performance on recommended hardware:
+
+| Metric | Value |
+|--------|-------|
+| Signal processing | <50ms |
+| Order execution (local) | <200ms |
+| Order execution (VPS) | <500ms |
+| Dashboard refresh | <1s |
+| Database queries | <100ms |
+| Memory usage (idle) | 300-500 MB |
+| Memory usage (active) | 800 MB - 1.5 GB |
+| CPU usage (idle) | <5% |
+| CPU usage (active) | 15-30% |
+
+## Compatibility Matrix
+
+| OS | Version | Status | Notes |
+|----|---------|--------|-------|
+| Windows | 11 | ✅ Fully Supported | Recommended |
+| Windows | 10 | ✅ Fully Supported | Use 64-bit |
+| Windows | 8.1 or older | ❌ Not Supported | Upgrade OS |
+| macOS | 14 (Sonoma) | ✅ Fully Supported | M1/M2/Intel |
+| macOS | 13 (Ventura) | ✅ Fully Supported | |
+| macOS | 12 (Monterey) | ✅ Supported | |
+| macOS | 11 (Big Sur) | ⚠️ Minimum | Some features limited |
+| macOS | 10.15 or older | ❌ Not Supported | Upgrade OS |
+| Ubuntu | 22.04 LTS | ✅ Fully Supported | Recommended |
+| Ubuntu | 20.04 LTS | ✅ Fully Supported | |
+| Ubuntu | 18.04 LTS | ⚠️ Minimum | EOL April 2023 |
+| Debian | 12 (Bookworm) | ✅ Fully Supported | |
+| Debian | 11 (Bullseye) | ✅ Fully Supported | |
+| CentOS | 8 Stream | ✅ Supported | |
+| Arch Linux | Latest | ✅ Supported | |
+| Raspberry Pi | 4 (8GB) | ⚠️ Experimental | Slow performance |
+
+## Troubleshooting Common Hardware Issues
+
+### "Bot is slow/laggy"
+
+**Likely causes:**
+- Insufficient RAM (close other applications)
+- Slow internet connection
+- Distant RPC provider
+- Running too many strategies simultaneously
+
+**Solutions:**
+- Upgrade to 4 GB+ RAM
+- Use wired ethernet instead of WiFi
+- Switch to a closer RPC provider
+- Reduce active strategies
+
+### "Frequent disconnections"
+
+**Likely causes:**
+- Unstable internet
+- VPS provider issues
+- Firewall blocking WebSocket
+
+**Solutions:**
+- Test connection stability: `ping -c 100 8.8.8.8`
+- Switch VPS provider if packet loss >1%
+- Configure firewall to allow port 3001
+
+### "High CPU usage"
+
+**Likely causes:**
+- Multiple strategies with high-frequency checking
+- Orderflow analysis enabled on too many pairs
+- Memory leak (restart bot)
+
+**Solutions:**
+- Increase strategy check interval (from 1s to 5s)
+- Disable orderflow for less important pairs
+- Restart bot weekly (add to cron)
+
+---
+
+**Next**: [Installation Guide →](/knowledge-base/installation/install-guide)

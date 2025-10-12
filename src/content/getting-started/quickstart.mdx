@@ -1,0 +1,284 @@
+---
+title: "Quickstart: Setup in 10 Minutes"
+description: "Get started quickly with wallet setup, funding, and first trade"
+author: "P.O.V Team"
+updatedAt: "January 2025"
+version: "1.0"
+tags: ["quickstart", "tutorial", "beginner"]
+readTime: "10 min read"
+---
+
+# Quickstart Guide: Trading in 10 Minutes
+
+This guide will get you from zero to your first automated trade in about 10 minutes. We'll skip the theory and focus on action.
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- ✅ A computer or VPS (Windows/Mac/Linux)
+- ✅ ~$50-100 worth of SOL (for testing)
+- ✅ Basic understanding of crypto wallets
+- ✅ 10 minutes of focused time
+
+## Step 1: Install a Wallet (2 minutes)
+
+We recommend **Phantom** for beginners.
+
+### Option A: Phantom (Easiest)
+
+1. Visit [phantom.app](https://phantom.app)
+2. Click "Download" and install the browser extension
+3. Open Phantom and click "Create New Wallet"
+4. **CRITICAL**: Write down your 12-word seed phrase on paper
+5. Store it somewhere safe (not on your computer)
+6. Set a strong password
+
+### Option B: Solflare (Advanced Users)
+
+1. Visit [solflare.com](https://solflare.com)
+2. Download and install
+3. Create new wallet, save seed phrase
+4. Enable hardware wallet support if you have Ledger
+
+**⚠️ Security Warning**: Your seed phrase is your money. If you lose it, your funds are gone forever. If someone steals it, they can drain your wallet instantly.
+
+## Step 2: Fund Your Wallet (2 minutes)
+
+You need SOL in your wallet to trade.
+
+### Get SOL from an Exchange
+
+1. Buy SOL on a centralized exchange (Coinbase, Binance, Kraken)
+2. Withdraw to your Phantom wallet address
+3. Wait for confirmation (usually 1-2 minutes)
+
+**Minimum amounts:**
+- Testing: 0.5 SOL (~$50)
+- Serious trading: 5+ SOL (~$500)
+
+### Or Use a DEX On-Ramp
+
+Some wallets support direct card purchases:
+- Phantom: Click "Buy" in the app
+- MoonPay, Ramp Network, or similar
+- Higher fees (~3-5%) but faster
+
+**Pro Tip**: Keep at least 0.1 SOL separate for transaction fees. Don't allocate your entire balance to trading.
+
+## Step 3: Install P.O.V Sniper BOT (3 minutes)
+
+### Quick Install (Recommended for Beginners)
+
+Download the pre-built binary for your OS:
+
+**Windows:**
+```bash
+# Download from releases page
+https://github.com/povsniper/bot/releases/latest
+
+# Extract pov-sniper-windows.exe
+# Double-click to run
+```
+
+**macOS:**
+```bash
+# Download from releases page
+https://github.com/povsniper/bot/releases/latest
+
+# Extract and run
+chmod +x pov-sniper-macos
+./pov-sniper-macos
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+wget https://github.com/povsniper/bot/releases/latest/pov-sniper-linux
+chmod +x pov-sniper-linux
+./pov-sniper-linux
+```
+
+### Docker Install (Recommended for VPS)
+
+If you're running on a VPS:
+
+```bash
+docker pull povsniper/bot:latest
+docker run -d --name pov-sniper \
+  -p 3000:3000 \
+  -v $(pwd)/config:/app/config \
+  povsniper/bot:latest
+```
+
+The bot will start and open a web interface at `http://localhost:3000`
+
+## Step 4: Connect Your Wallet (1 minute)
+
+1. Open the bot's web interface (should auto-launch)
+2. Click "Connect Wallet" in the top right
+3. Select "Phantom" (or your wallet)
+4. Approve the connection in the wallet popup
+5. Verify your SOL balance is displayed correctly
+
+**Troubleshooting:**
+- If wallet doesn't connect, refresh the page
+- Make sure Phantom is unlocked
+- Check that you're on Solana Mainnet (not Devnet)
+
+## Step 5: Configure Your First Strategy (2 minutes)
+
+Let's set up a simple **Grid Trading** strategy on SOL/USDC.
+
+### Quick Setup
+
+1. Click "**Strategies**" in the sidebar
+2. Click "**Create New Strategy**"
+3. Select "**Grid Trading**" template
+4. Fill in these values:
+
+```
+Strategy Name: My First Grid Bot
+Trading Pair: SOL/USDC
+Grid Size: 5 levels
+Price Range: 
+  - Lower: $95
+  - Upper: $105
+Investment per Grid: 0.1 SOL
+Take Profit: 2% per trade
+Stop Loss: 5% total drawdown
+```
+
+5. Click "**Save Strategy**"
+
+### What This Does
+
+This configuration will:
+- Buy SOL when price drops to $95, $96, $97, $98, $99
+- Sell SOL when price rises to $100, $101, $102, $103, $104, $105
+- Each trade uses 0.1 SOL
+- Profit from price oscillations in the $95-$105 range
+
+## Step 6: Start Trading! (30 seconds)
+
+1. Return to the strategy list
+2. Find your "My First Grid Bot" strategy
+3. Click the toggle switch to "**Active**"
+4. Confirm the warning popup
+5. Watch the live chart — bot is now monitoring the market!
+
+**First Trade Timeline:**
+- The bot will wait for price to hit one of your grid levels
+- This could be immediate or take hours (depends on volatility)
+- You'll receive a Telegram notification when trades execute (setup notifications in Settings)
+
+## What to Expect
+
+### First Hour
+
+- Bot monitors price every second
+- No trades yet (unless price hits your grid levels immediately)
+- Dashboard shows "Waiting for signal..."
+
+### First Trade
+
+- Price hits a grid level (e.g., drops to $97)
+- Bot validates the signal (checks orderflow, volume)
+- **Sends transaction** to your wallet for approval
+- **You must approve** in Phantom (or enable auto-approve)
+- Trade confirms in ~3 seconds
+- Dashboard updates with new position
+
+### Ongoing Operation
+
+- Bot continues monitoring all grid levels
+- Automatically rebalances as price moves
+- Dashboard shows open positions, P&L, and trade history
+- Notifications keep you informed (optional, but recommended)
+
+## Quick Wins: Optimize Your First Day
+
+### Enable Telegram Notifications
+
+Stay updated without watching the dashboard:
+
+1. Go to **Settings → Notifications**
+2. Click "**Connect Telegram**"
+3. Message the @POVSniperBot on Telegram
+4. Enter the code shown in the bot UI
+5. Choose notification preferences:
+   - ✅ Trade executed
+   - ✅ Stop loss triggered
+   - ✅ Daily summary
+   - ❌ Every price check (too noisy)
+
+### Set Up Auto-Approve (Optional)
+
+Skip manual transaction approvals:
+
+⚠️ **Security Warning**: Only enable this for dedicated trading wallets with limited funds.
+
+1. Go to **Settings → Wallet**
+2. Enable "**Auto-Approve Transactions**"
+3. Set maximum trade size (e.g., 1 SOL)
+4. Transactions under this limit auto-execute
+
+### Monitor Performance
+
+After a few trades:
+
+1. Check **Dashboard → Performance**
+2. Review:
+   - Total trades executed
+   - Win rate (% of profitable trades)
+   - Average profit per trade
+   - Total P&L (profit and loss)
+
+## Common First-Day Issues
+
+### "Insufficient funds for transaction"
+- Keep at least 0.05 SOL for fees
+- Don't allocate 100% of balance to trading
+
+### "Slippage tolerance exceeded"
+- Market moved too fast
+- Increase slippage tolerance in strategy settings (carefully)
+
+### "Wallet not responding"
+- Unlock Phantom
+- Refresh the bot's web interface
+- Reconnect wallet
+
+### "No trades after 24 hours"
+- Price hasn't hit your grid levels
+- Your range might be too narrow/wide
+- Check live price vs. your configured range
+
+## Next Steps
+
+### Learn More Strategies
+
+- **[DCA Strategy](/knowledge-base/strategies/dca-strategy)**: Accumulate during dips
+- **[Scalping Guide](/knowledge-base/strategies/scalping-guide)**: High-frequency trading
+- **[POV Strategy](/knowledge-base/strategies/pov-strategy)**: Advanced orderflow detection
+
+### Secure Your Setup
+
+- **[Security Best Practices](/knowledge-base/security/private-key-handling)**: Protect your funds
+- **[Backup & Recovery](/knowledge-base/security/backups-recovery)**: Don't lose access
+
+### Optimize Performance
+
+- **[Risk Management](/knowledge-base/bot-controls/risk-management)**: Configure SL/TP properly
+- **[Backtester](/knowledge-base/bot-controls/backtester)**: Test strategies before risking real funds
+
+## Join the Community
+
+- **Discord**: Live chat, strategy sharing, troubleshooting
+- **Telegram**: Announcements, updates, quick support
+- **Twitter**: Follow [@POVSniperBot](https://twitter.com/povsniperbot) for tips
+
+---
+
+**Congratulations!** 🎉 You've set up your first automated trading bot. Start small, learn from each trade, and gradually increase your position sizes as you gain confidence.
+
+**Having issues?** Check the **[Troubleshooting Checklist](/knowledge-base/troubleshooting/checklist)** or ask in our **[Discord community](https://discord.gg/povsniper)**.
