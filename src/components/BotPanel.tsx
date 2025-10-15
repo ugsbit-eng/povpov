@@ -17,7 +17,12 @@ export default function BotPanel() {
     const canvas = sparkCanvasRef.current;
     if (!canvas) return;
 
+    let rafId: number;
+    let isActive = true;
+
     const draw = () => {
+      if (!isActive) return;
+      
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
@@ -33,7 +38,10 @@ export default function BotPanel() {
       ctx.clearRect(0, 0, w, h);
 
       const arr = s.priceSeries;
-      if (arr.length < 2) return;
+      if (arr.length < 2) {
+        rafId = requestAnimationFrame(draw);
+        return;
+      }
 
       const min = Math.min(...arr);
       const max = Math.max(...arr);
@@ -50,10 +58,17 @@ export default function BotPanel() {
       ctx.strokeStyle = "rgba(0, 255, 127, 0.95)";
       ctx.stroke();
 
-      requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     };
 
     draw();
+
+    return () => {
+      isActive = false;
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, [s.priceSeries]);
 
   return (

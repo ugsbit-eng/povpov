@@ -10,12 +10,29 @@ export async function GET() {
     async start(controller) {
       const push = (data: any) => controller.enqueue(send(data));
       push({ type: "kpis", data: getKPIs() });
+      
       const iv = setInterval(() => push({ type: "kpis", data: getKPIs() }), 1000);
       const hb = setInterval(() => controller.enqueue(enc.encode(":hb\n\n")), 10000);
 
-      // @ts-ignore
-      controller.error = () => { clearInterval(iv); clearInterval(hb); };
+      // Proper cleanup when stream is cancelled
+      const cleanup = () => {
+        clearInterval(iv);
+        clearInterval(hb);
+      };
+
+      // Handle abort signal for proper cleanup
+      const abortController = new AbortController();
+      abortController.signal.addEventListener('abort', cleanup);
+      
+      // Store cleanup function for potential manual cleanup
+      (controller as any).cleanup = cleanup;
     },
+    cancel() {
+      // This is called when the client disconnects
+      if ((this as any).cleanup) {
+        (this as any).cleanup();
+      }
+    }
   });
 
   return new Response(stream, {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import { getArticleContent } from "@/lib/kb-content";
 import KBCodeBlock from "./kb-code-block";
 import KBCallout from "./kb-callout";
@@ -30,10 +31,23 @@ export default function MDXArticleRenderer({ category, slug }: MDXArticleRendere
 
   // Simple markdown-like rendering for demo
   // In production, use proper MDX with next-mdx-remote or @next/mdx
+  const sanitizedHTML = DOMPurify.sanitize(parseMarkdown(content), {
+    ALLOWED_TAGS: [
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'p', 'br', 'hr',
+      'strong', 'em', 'b', 'i', 'u',
+      'a', 'code', 'pre',
+      'ul', 'ol', 'li',
+      'blockquote',
+    ],
+    ALLOWED_ATTR: ['href', 'class', 'id'],
+    ALLOW_DATA_ATTR: false,
+  });
+
   return (
     <div 
       className="prose-article"
-      dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }}
+      dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
     />
   );
 }
