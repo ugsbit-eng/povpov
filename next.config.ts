@@ -8,11 +8,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'slelguoygbfzlpylpxfs.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fonts.googleapis.com',
       },
       {
         protocol: 'http',
-        hostname: '**',
+        hostname: 'jeweethetzelftoch.ct.ws',
       },
     ],
   },

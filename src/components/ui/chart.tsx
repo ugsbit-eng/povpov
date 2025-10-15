@@ -78,6 +78,18 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null
   }
 
+  // Sanitize CSS property names and values to prevent injection
+  const sanitizeCSSValue = (value: string): string => {
+    // Only allow safe CSS color values (hex, rgb, hsl, named colors)
+    const safeColorPattern = /^(#[0-9A-Fa-f]{3,8}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-z]+)$/;
+    return safeColorPattern.test(value) ? value : '';
+  };
+
+  const sanitizeCSSKey = (key: string): string => {
+    // Only allow alphanumeric, hyphens, and underscores
+    return key.replace(/[^a-zA-Z0-9_-]/g, '');
+  };
+
   return (
     <style
       dangerouslySetInnerHTML={{
@@ -90,7 +102,9 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    const sanitizedKey = sanitizeCSSKey(key);
+    const sanitizedColor = color ? sanitizeCSSValue(color) : '';
+    return sanitizedColor ? `  --color-${sanitizedKey}: ${sanitizedColor};` : null
   })
   .join("\n")}
 }

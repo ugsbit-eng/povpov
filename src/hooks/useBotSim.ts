@@ -106,101 +106,112 @@ export function useBotSim() {
 
   React.useEffect(() => {
     if (!running || typeof window === 'undefined') return;
-    let t = 0;
+    
+    let timeoutId: number;
+    let isActive = true;
+
     const loop = () => {
+      if (!isActive) return;
+      
       const r = rngRef.current;
-      let s = { ...state };
-      const today = fmtDayKey();
-      if (s.dayKey !== today) { 
-        s.pnlToday = 0; 
-        s.dayKey = today; 
-      }
-
-      const vol = r() * 0.0025 + (r() < 0.05 ? r() * 0.01 : 0);
-      const dir = r() < 0.5 ? -1 : 1;
-      s.price = Math.max(0.000001, s.price * (1 + dir * vol));
-
-      const mk = s.price;
-      const mkStep = mk * 0.002;
-      const makeLevel = (i: number, side: "bid" | "ask"): OrderLevel => {
-        const base = side === "bid" ? mk - i * mkStep : mk + i * mkStep;
-        const sz = 100 + Math.floor(r() * 900);
-        return { price: base * (1 + (r() - 0.5) * 0.0008), size: sz, cum: 0 };
-      };
-      const bids = Array.from({ length: 10 }, (_, i) => makeLevel(i + 1, "bid")).sort((a, b) => b.price - a.price);
-      const asks = Array.from({ length: 10 }, (_, i) => makeLevel(i + 1, "ask")).sort((a, b) => a.price - b.price);
-      let cum = 0; 
-      for (const b of bids) { 
-        cum += b.size; 
-        b.cum = cum; 
-      } 
-      cum = 0; 
-      for (const a of asks) { 
-        cum += a.size; 
-        a.cum = cum; 
-      }
-      s.orderbook = { bids, asks };
-
-      const now = Date.now();
-      const openChance = r() < 0.12 && s.positions.length < 5;
-      if (openChance) {
-        const side = r() < 0.5 ? "Buy" : "Sell";
-        const size = (1_000 + r() * 9_000) | 0;
-        const slip = mk * (r() * 0.0015);
-        const entry = side === "Buy" ? mk + slip : mk - slip;
-        const upnl = 0;
-        const sl = side === "Buy" ? entry * (1 - 0.02 - r() * 0.01) : entry * (1 + 0.02 + r() * 0.01);
-        const tp = side === "Buy" ? entry * (1 + 0.03 + r() * 0.02) : entry * (1 - 0.03 - r() * 0.02);
-        s.positions = [...s.positions, { token: "BOT/USDC", side, size, entry, mark: mk, upnl, sl, tp, openedAt: now }];
-      }
-
-      const fee = 0.0005;
-      const newPositions: Position[] = [];
-      for (const p of s.positions) {
-        const mark = s.price;
-        const ret = p.side === "Buy" ? (mark / p.entry - 1) : (p.entry / mark - 1);
-        const upnl = (ret - fee) * p.size;
-        const hitTP = p.side === "Buy" ? mark >= p.tp : mark <= p.tp;
-        const hitSL = p.side === "Buy" ? mark <= p.sl : mark >= p.sl;
-        const aging = now - p.openedAt > 20_000 + rngRef.current() * 60_000;
-        const closeIt = hitTP || hitSL || (aging && rngRef.current() < 0.2);
-        if (closeIt) {
-          const slip2 = mark * (r() * 0.0015);
-          const exit = p.side === "Buy" ? mark - slip2 : mark + slip2;
-          const retReal = p.side === "Buy" ? (exit / p.entry - 1) : (p.entry / exit - 1);
-          const pnl = (retReal - fee * 2) * p.size;
-          const row: TradeRow = {
-            at: now, 
-            token: "BOT/USDC", 
-            side: p.side, 
-            size: p.size, 
-            entry: p.entry, 
-            exit, 
-            pnl, 
-            ret: retReal * 100
-          };
-          s.tradeFeed = [row, ...s.tradeFeed].slice(0, 200);
-          s.trades += 1;
-          s.pnlToday += pnl;
-          s.equity = Math.max(0, s.equity + pnl);
-          const win = pnl > 0 ? 1 : 0;
-          s.winRate = clamp(s.winRate + (win ? +0.05 : -0.05) + (r() - 0.5) * 0.02, 40, 90);
-          s.avgReturn = clamp(s.avgReturn + (r() - 0.5) * 0.1, -2, 5);
-        } else {
-          newPositions.push({ ...p, mark, upnl });
+      setState(prevState => {
+        let s = { ...prevState };
+        const today = fmtDayKey();
+        if (s.dayKey !== today) { 
+          s.pnlToday = 0; 
+          s.dayKey = today; 
         }
+
+        const vol = r() * 0.0025 + (r() < 0.05 ? r() * 0.01 : 0);
+        const dir = r() < 0.5 ? -1 : 1;
+        s.price = Math.max(0.000001, s.price * (1 + dir * vol));
+
+        const mk = s.price;
+        const mkStep = mk * 0.002;
+        const makeLevel = (i: number, side: "bid" | "ask"): OrderLevel => {
+          const base = side === "bid" ? mk - i * mkStep : mk + i * mkStep;
+          const sz = 100 + Math.floor(r() * 900);
+          return { price: base * (1 + (r() - 0.5) * 0.0008), size: sz, cum: 0 };
+        };
+        const bids = Array.from({ length: 10 }, (_, i) => makeLevel(i + 1, "bid")).sort((a, b) => b.price - a.price);
+        const asks = Array.from({ length: 10 }, (_, i) => makeLevel(i + 1, "ask")).sort((a, b) => a.price - b.price);
+        let cum = 0; 
+        for (const b of bids) { 
+          cum += b.size; 
+          b.cum = cum; 
+        } 
+        cum = 0; 
+        for (const a of asks) { 
+          cum += a.size; 
+          a.cum = cum; 
+        }
+        s.orderbook = { bids, asks };
+
+        const now = Date.now();
+        const openChance = r() < 0.12 && s.positions.length < 5;
+        if (openChance) {
+          const side = r() < 0.5 ? "Buy" : "Sell";
+          const size = (1_000 + r() * 9_000) | 0;
+          const slip = mk * (r() * 0.0015);
+          const entry = side === "Buy" ? mk + slip : mk - slip;
+          const upnl = 0;
+          const sl = side === "Buy" ? entry * (1 - 0.02 - r() * 0.01) : entry * (1 + 0.02 + r() * 0.01);
+          const tp = side === "Buy" ? entry * (1 + 0.03 + r() * 0.02) : entry * (1 - 0.03 - r() * 0.02);
+          s.positions = [...s.positions, { token: "BOT/USDC", side, size, entry, mark: mk, upnl, sl, tp, openedAt: now }];
+        }
+
+        const fee = 0.0005;
+        const newPositions: Position[] = [];
+        for (const p of s.positions) {
+          const mark = s.price;
+          const ret = p.side === "Buy" ? (mark / p.entry - 1) : (p.entry / mark - 1);
+          const upnl = (ret - fee) * p.size;
+          const hitTP = p.side === "Buy" ? mark >= p.tp : mark <= p.tp;
+          const hitSL = p.side === "Buy" ? mark <= p.sl : mark >= p.sl;
+          const aging = now - p.openedAt > 20_000 + rngRef.current() * 60_000;
+          const closeIt = hitTP || hitSL || (aging && rngRef.current() < 0.2);
+          if (closeIt) {
+            const slip2 = mark * (r() * 0.0015);
+            const exit = p.side === "Buy" ? mark - slip2 : mark + slip2;
+            const retReal = p.side === "Buy" ? (exit / p.entry - 1) : (p.entry / exit - 1);
+            const pnl = (retReal - fee * 2) * p.size;
+            const row: TradeRow = {
+              at: now, 
+              token: "BOT/USDC", 
+              side: p.side, 
+              size: p.size, 
+              entry: p.entry, 
+              exit, 
+              pnl, 
+              ret: retReal * 100
+            };
+            s.tradeFeed = [row, ...s.tradeFeed].slice(0, 200);
+            s.trades += 1;
+            s.pnlToday += pnl;
+            s.equity = Math.max(0, s.equity + pnl);
+            const win = pnl > 0 ? 1 : 0;
+            s.winRate = clamp(s.winRate + (win ? +0.05 : -0.05) + (r() - 0.5) * 0.02, 40, 90);
+            s.avgReturn = clamp(s.avgReturn + (r() - 0.5) * 0.1, -2, 5);
+          } else {
+            newPositions.push({ ...p, mark, upnl });
+          }
+        }
+        s.positions = newPositions;
+
+        s.latencyMs = clamp((s.latencyMs + (r() - 0.5) * 10) | 0, 18, 160);
+        s.priceSeries = [...s.priceSeries.slice(-119), s.price];
+        s.lastUpdateMs = now;
+
+        save(s);
+        return s;
+      });
+
+      if (isActive) {
+        timeoutId = window.setTimeout(loop, Math.floor((1000 + Math.random() * 2000) / speed));
       }
-      s.positions = newPositions;
-
-      s.latencyMs = clamp((s.latencyMs + (r() - 0.5) * 10) | 0, 18, 160);
-      s.priceSeries = [...s.priceSeries.slice(-119), s.price];
-      s.lastUpdateMs = now;
-
-      setState(s);
-      save(s);
-      t = window.setTimeout(loop, Math.floor((1000 + Math.random() * 2000) / speed));
     };
-    t = window.setTimeout(loop, 500);
+    
+    timeoutId = window.setTimeout(loop, 500);
     
     const onVis = () => { 
       if (document.visibilityState === "visible") setState(s => ({ ...s })); 
@@ -217,11 +228,12 @@ export function useBotSim() {
     window.addEventListener("storage", onStorage);
     
     return () => { 
-      window.clearTimeout(t); 
+      isActive = false;
+      window.clearTimeout(timeoutId); 
       document.removeEventListener("visibilitychange", onVis); 
       window.removeEventListener("storage", onStorage); 
     };
-  }, [running, speed, state]);
+  }, [running, speed]); // Removed 'state' from dependencies to prevent cycle
 
   const start = () => setRunning(true);
   const pause = () => setRunning(false);
