@@ -103,8 +103,10 @@ const HeroSection = () => {
                   }
                 }}
                 style={{
-                  transformStyle: "preserve-3d"
-                }}>
+                  transformStyle: "preserve-3d",
+                  transform: "scale(1.25)"
+                }}
+                className="origin-center">
 
                 <motion.div
                   animate={{
