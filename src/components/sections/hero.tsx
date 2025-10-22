@@ -124,8 +124,8 @@ const HeroSection = () => {
 
                   <Image
                     src="https://cdn.builder.io/api/v1/image/assets%2F6ae980b39107469596ac4ca0823e3b31%2F78d2382ee39e4aebb4227717dd14e35d?format=webp&width=800"
-                    width={623}
-                    height={612}
+                    width={779}
+                    height={765}
                     alt="P.O.V Robot"
                     priority
                     className="relative z-10" />
