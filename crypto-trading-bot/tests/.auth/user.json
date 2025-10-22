@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "__next_hmr_refresh_hash__",
+      "value": "6ab4af03b6dc8eabea1b21ccf355bd45633457081244afec",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "authToken",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGY0MzUxYjlhYzQ3ZTJkZGJkMWFkNWQiLCJpYXQiOjE3NjA5NzI4MTIyMDAsImV4cCI6MTc2MDk3NTQwNDIwMH0.Ao2CeSY7Os1IuaaC_9B0A8aO6uS_0GYwlawAWxENZmA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model StrategyStats {
+  id          String @id @unique
+  totalProfit Float
+  winCount    Int
+  lossCount   Int
+  totalTrades Int
+  // Storing PNL history as a JSON string
+  pnlHistory  String
+}
