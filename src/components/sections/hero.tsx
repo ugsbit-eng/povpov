@@ -88,7 +88,8 @@ const HeroSection = () => {
               <motion.div
                 animate={{
                   y: [0, -20, 0],
-                  rotateY: [0, 5, 0, -5, 0]
+                  rotateY: [0, 5, 0, -5, 0],
+                  scale: 1.25
                 }}
                 transition={{
                   y: {
@@ -103,10 +104,8 @@ const HeroSection = () => {
                   }
                 }}
                 style={{
-                  transformStyle: "preserve-3d",
-                  transform: "scale(1.25)"
-                }}
-                className="origin-center">
+                  transformStyle: "preserve-3d"
+                }}>
 
                 <motion.div
                   animate={{
