@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Navigation from "@/components/sections/navigation";
 import KBSidebar from "@/components/kb/kb-sidebar";
 import KBBreadcrumbs from "@/components/kb/kb-breadcrumbs";
 import { getCategory, getCategoryArticles } from "@/lib/kb-content";
@@ -18,9 +17,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
-      <div className="pt-[72px]">
-        <Navigation />
-      </div>
 
       <div className="container mx-auto px-6 py-12">
         <div className="flex gap-8">

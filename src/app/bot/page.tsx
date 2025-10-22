@@ -1,5 +1,4 @@
 "use client";
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import MetricCard from "@/components/trading/MetricCard";
 import NetworkStatus from "@/components/trading/NetworkStatus";
@@ -28,9 +27,6 @@ export default function BotPage() {
 
   return (
     <main className="min-h-screen bg-[#0a1628] text-white">
-      <div className="pt-[72px]">
-        <Navigation />
-      </div>
 
       <div className="pt-[110px] pb-[120px] lg:pt-[130px] lg:pb-[140px]">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">

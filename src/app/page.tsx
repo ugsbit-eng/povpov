@@ -1,4 +1,3 @@
-import Navigation from "@/components/sections/navigation";
 import HeroSection from "@/components/sections/hero";
 import EasyStepsSniper from "@/components/sections/easy-steps-sniper";
 import GridBotStrategySection from "@/components/sections/grid-bot-strategy";
@@ -11,11 +10,6 @@ import Footer from "@/components/sections/footer";
 export default function Page() {
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
-      
-      <div className="pt-[72px]">
-        <Navigation />
-      </div>
-
       <HeroSection />
 
       <section className="bg-background-primary py-20 lg:py-28">

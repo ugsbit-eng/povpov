@@ -1,6 +1,5 @@
 "use client";
 
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,11 +8,6 @@ import { motion } from "framer-motion";
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
-      
-      <div className="pt-[72px]">
-        <Navigation />
-      </div>
-
       {/* HERO SECTION */}
       <section id="hero" className="relative overflow-hidden bg-[#0a1929] pt-[110px] pb-[120px] lg:pt-[130px] lg:pb-[140px]">
         <div className="container relative z-10 mx-auto px-6 md:px-12 lg:px-20">

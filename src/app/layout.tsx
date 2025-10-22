@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
+import Navigation from "@/components/sections/navigation";
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -28,6 +29,9 @@ export default function RootLayout({
           data-debug="true"
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
+        <div className="pt-[72px]">
+          <Navigation />
+        </div>
         {children}
         <VisualEditsMessenger />
       </body>

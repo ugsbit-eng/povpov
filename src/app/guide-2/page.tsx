@@ -1,4 +1,3 @@
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
@@ -6,11 +5,6 @@ import { ChevronRight } from "lucide-react";
 export default function Guide2Page() {
   return (
     <main className="min-h-screen bg-background-primary text-text-primary">
-      
-      <div className="pt-[72px]">
-        <Navigation />
-      </div>
-
       {/* Hero Section */}
       <section className="relative bg-background-primary py-20 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 opacity-30">
