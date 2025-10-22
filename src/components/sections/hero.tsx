@@ -123,10 +123,10 @@ const HeroSection = () => {
                   }}>
 
                   <Image
-                    src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/af5db15b-f5d8-4f95-970a-a043630c22a7-goodcrypto-app/assets/images/sol_bot_main-4.png?"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F6ae980b39107469596ac4ca0823e3b31%2F78d2382ee39e4aebb4227717dd14e35d?format=webp&width=800"
                     width={623}
                     height={612}
-                    alt="Solana Bot"
+                    alt="P.O.V Robot"
                     priority
                     className="relative z-10" />
 
