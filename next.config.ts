@@ -3,6 +3,7 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -21,7 +22,6 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.builder.io',
       },
     ],
-    qualities: [75, 90, 100],
   },
   eslint: {
     ignoreDuringBuilds: false,
