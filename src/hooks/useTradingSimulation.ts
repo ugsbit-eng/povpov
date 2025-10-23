@@ -190,7 +190,7 @@ export function useTradingSimulation() {
           const newUnrealizedPercent = ((newPrice - pos.entryPrice) / pos.entryPrice) * 100;
           const newUnrealizedPnL = pos.unrealizedPnL + (-0.5 + Math.random() * 1.5);
           const newDuration = Math.floor((Date.now() - pos.openedAt) / 1000);
-          
+
           return {
             ...pos,
             currentPrice: newPrice,
@@ -205,7 +205,7 @@ export function useTradingSimulation() {
           // Close a position
           updated.splice(Math.floor(Math.random() * updated.length), 1);
         }
-        
+
         if (Math.random() < 0.2 && updated.length < 8) {
           // Open a new position
           updated.push(generatePosition());
@@ -217,6 +217,27 @@ export function useTradingSimulation() {
 
     return () => clearInterval(interval);
   }, [isRunning, generatePosition]);
+
+  // Fluctuate active bots count slightly
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setActiveBots(prev => {
+        // Fluctuate between 255-265 (centered around 260)
+        const change = Math.random() < 0.5 ? -1 : 1;
+        const newValue = prev + change;
+
+        // Keep within bounds
+        if (newValue < 255) return 255;
+        if (newValue > 265) return 265;
+
+        return newValue;
+      });
+    }, 8000 + Math.random() * 4000); // 8-12 seconds
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   // Calculate metrics
   const metrics: MetricData = {
