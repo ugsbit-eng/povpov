@@ -488,7 +488,15 @@ export default function HoverReceiver() {
               ) as HTMLElement;
 
               if (element) {
-                // Simulate a click on the element to restore focus
+                // Safeguard: prevent navigation/actions when restoring focus
+                const prevent = (e: Event) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                };
+                if (element.tagName.toLowerCase() === "a" || element.closest("a")) {
+                  element.addEventListener("click", prevent, { capture: true, once: true } as any);
+                }
+                // Simulate a click on the element to restore focus (only to trigger our capture handler)
                 const rect = element.getBoundingClientRect();
                 const clickEvent = new MouseEvent("click", {
                   clientX: rect.left + rect.width / 2,
