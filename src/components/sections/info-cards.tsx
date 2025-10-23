@@ -17,7 +17,7 @@ export default function InfoCards() {
               <div className="flex justify-center md:justify-start">
                 <div className="relative w-[180px] h-[180px] shrink-0">
                   <Image
-                    src="http://jeweethetzelftoch.ct.ws/wp-content/uploads/2025/10/3gems.png"
+                    src="https://jeweethetzelftoch.ct.ws/wp-content/uploads/2025/10/3gems.png"
                     alt="Three Gems"
                     width={180}
                     height={180}
