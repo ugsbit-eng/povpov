@@ -84,7 +84,7 @@ export default function AboutPage() {
       {/* ORIGIN OF THE TRINITY */}
       <section id="origin" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px]">
+          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
             <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
@@ -424,7 +424,7 @@ export default function AboutPage() {
       {/* TRINITY SYSTEM */}
       <section id="trinity-system" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px]">
+          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
             <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="flex items-center justify-center order-2 md:order-1">
@@ -461,7 +461,7 @@ export default function AboutPage() {
       {/* PHILOSOPHY & VALUES */}
       <section id="values" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px]">
+          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
             <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
