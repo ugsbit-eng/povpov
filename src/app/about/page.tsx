@@ -84,8 +84,8 @@ export default function AboutPage() {
       {/* ORIGIN OF THE TRINITY */}
       <section id="origin" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
-            <div className="h-full w-full rounded-[23px] bg-[#343a40] p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
+          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px]">
+            <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
                   <p className="text-sm font-semibold uppercase tracking-wider text-primary-green">Origin of the Trinity</p>
@@ -424,8 +424,8 @@ export default function AboutPage() {
       {/* TRINITY SYSTEM */}
       <section id="trinity-system" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
-            <div className="h-full w-full rounded-[23px] bg-background-tertiary/60 p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
+          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px]">
+            <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="flex items-center justify-center order-2 md:order-1">
                   <Image
@@ -461,8 +461,8 @@ export default function AboutPage() {
       {/* PHILOSOPHY & VALUES */}
       <section id="values" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
-            <div className="h-full w-full rounded-[23px] bg-background-tertiary/60 p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
+          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px]">
+            <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
                   <h2 className="text-[40px] font-bold leading-[1.3] tracking-[-0.01em] text-text-primary">
