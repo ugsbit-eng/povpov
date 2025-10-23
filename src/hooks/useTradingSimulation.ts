@@ -27,7 +27,10 @@ export function useTradingSimulation() {
   const [profitData, setProfitData] = useState<ProfitDataPoint[]>([]);
   const [cumulativeProfit, setCumulativeProfit] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
-  
+  const [activeBots, setActiveBots] = useState(258);
+  const [totalTradeCount, setTotalTradeCount] = useState(0);
+  const [totalVolume, setTotalVolume] = useState(0);
+
   const tradeIdCounter = useRef(0);
   const positionIdCounter = useRef(0);
   const startTime = useRef(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
