@@ -85,7 +85,7 @@ export default function AboutPage() {
       <section id="origin" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
           <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
-            <div className="h-full w-full rounded-[23px] bg-background-tertiary/60 p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
+            <div className="h-full w-full rounded-[23px] bg-[#343a40] p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
                   <p className="text-sm font-semibold uppercase tracking-wider text-primary-green">Origin of the Trinity</p>
