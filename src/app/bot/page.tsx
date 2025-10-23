@@ -20,6 +20,9 @@ export default function BotPage() {
     setIsRunning
   } = useTradingSimulation();
 
+  // Screen reader announcement for trading status
+  const statusAnnouncement = `Trading bot is ${isRunning ? 'running' : 'paused'}. Total profit: $${metrics.totalProfit24h.toFixed(0)}. Win rate: ${metrics.winRate}%.`;
+
   const networkStatus = [
     { chain: 'solana' as const, status: 'operational' as const, latency: 234 },
     { chain: 'ethereum' as const, status: 'operational' as const, latency: 187 }
@@ -27,6 +30,10 @@ export default function BotPage() {
 
   return (
     <main className="min-h-screen bg-[#0a1628] text-white">
+      {/* Screen reader status announcement */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {statusAnnouncement}
+      </div>
 
       <div className="pt-[110px] pb-[120px] lg:pt-[130px] lg:pb-[140px]">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
