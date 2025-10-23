@@ -132,29 +132,29 @@ export function useTradingSimulation() {
     setPositions(initialPositions);
   }, [generateTrade, generatePosition]);
 
-  // Add new trade simulation
+  // Add new trade simulation (throttled to reduce jank)
   useEffect(() => {
     if (!isRunning) return;
 
     const interval = setInterval(() => {
       const newTrade = generateTrade();
-      
+
       setTrades(prev => [newTrade, ...prev].slice(0, 50));
       setCumulativeProfit(prev => prev + newTrade.profit);
-      
+
       // Update profit chart
       setProfitData(prev => {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         const lastPoint = prev[prev.length - 1];
-        
+
         return [...prev.slice(-23), {
           time: timeStr,
           profit: lastPoint.profit + newTrade.profit
         }];
       });
-      
-    }, 2000 + Math.random() * 3000); // 2-5 seconds
+
+    }, 3000 + Math.random() * 2000); // 3-5 seconds (throttled for smoother UX)
 
     return () => clearInterval(interval);
   }, [isRunning, generateTrade]);
@@ -238,4 +238,3 @@ export function useTradingSimulation() {
     setIsRunning
   };
 }
-
