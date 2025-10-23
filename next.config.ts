@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'jeweethetzelftoch.ct.ws',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdn.builder.io',
       },
     ],
