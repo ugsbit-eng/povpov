@@ -153,6 +153,13 @@ export function useTradingSimulation() {
       setTrades(prev => [newTrade, ...prev].slice(0, 50));
       setCumulativeProfit(prev => prev + newTrade.profit);
 
+      // Increment total trade count
+      setTotalTradeCount(prev => prev + 1);
+
+      // Add to total volume (estimate trade volume based on profit)
+      const tradeVolume = Math.abs(newTrade.profit) * (8 + Math.random() * 12); // 8-20x multiplier
+      setTotalVolume(prev => prev + tradeVolume);
+
       // Update profit chart
       setProfitData(prev => {
         const now = new Date();
