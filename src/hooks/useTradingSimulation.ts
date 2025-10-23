@@ -243,13 +243,13 @@ export function useTradingSimulation() {
   const metrics: MetricData = {
     totalProfit24h: cumulativeProfit,
     profitChange: 12.4,
-    activeBots: 847,
+    activeBots: activeBots,
     winRate: 73.2,
-    totalTrades24h: trades.length,
-    avgProfitPerTrade: trades.length > 0 
-      ? trades.reduce((sum, t) => sum + t.profit, 0) / trades.length 
-      : 1.76,
-    totalVolume24h: 284392
+    totalTrades24h: totalTradeCount,
+    avgProfitPerTrade: totalTradeCount > 0
+      ? cumulativeProfit / totalTradeCount
+      : 0,
+    totalVolume24h: Math.round(totalVolume)
   };
 
   const performanceMetrics: PerformanceMetrics = {
@@ -263,8 +263,8 @@ export function useTradingSimulation() {
     },
     avgTradeDuration: 167, // 2m 47s
     successStreak: 12,
-    totalBotsRunning: 847,
-    profitableBots: 621
+    totalBotsRunning: activeBots,
+    profitableBots: Math.round(activeBots * 0.73) // ~73% profitable (matching win rate)
   };
 
   return {
