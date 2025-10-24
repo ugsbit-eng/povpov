@@ -319,6 +319,45 @@ export function useTradingSimulation() {
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  // Periodic save (every 10 seconds)
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const interval = setInterval(() => {
+      saveState();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [isLoaded, saveState]);
+
+  // Save on unmount
+  useEffect(() => {
+    return () => {
+      if (isLoaded) {
+        saveState();
+      }
+    };
+  }, [isLoaded, saveState]);
+
+  // Debounced save when isRunning changes
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      saveState();
+    }, 500);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [isRunning, isLoaded, saveState]);
+
   // Calculate metrics
   const metrics: MetricData = {
     totalProfit24h: cumulativeProfit,
