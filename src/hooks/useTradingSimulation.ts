@@ -164,62 +164,54 @@ export function useTradingSimulation() {
     }
   }, [trades, positions, cumulativeProfit, activeBots, totalTradeCount, totalVolume, isRunning, profitData]);
 
-  // Load state on mount, initialize if empty
+  // Initialize immediately, then load saved state in background
   useEffect(() => {
-    const init = async () => {
-      const loaded = await loadState();
+    // Generate 24 hours of profit data (hourly points)
+    const historicalData: ProfitDataPoint[] = [];
+    let profit = 0;
 
-      // Only initialize with fresh data if nothing was loaded
-      if (!loaded) {
-        // Generate 24 hours of profit data (hourly points)
-        const historicalData: ProfitDataPoint[] = [];
-        let profit = 0;
+    for (let i = 0; i < 24; i++) {
+      const hour = new Date(startTime.current + i * 60 * 60 * 1000);
+      const hourStr = hour.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-        for (let i = 0; i < 24; i++) {
-          const hour = new Date(startTime.current + i * 60 * 60 * 1000);
-          const hourStr = hour.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      // Gradual profit increase with some variance
+      profit += 80 + Math.random() * 60; // $80-$140 per hour
 
-          // Gradual profit increase with some variance
-          profit += 80 + Math.random() * 60; // $80-$140 per hour
+      historicalData.push({
+        time: hourStr,
+        profit: parseFloat(profit.toFixed(2))
+      });
+    }
 
-          historicalData.push({
-            time: hourStr,
-            profit: parseFloat(profit.toFixed(2))
-          });
-        }
+    setProfitData(historicalData);
+    setCumulativeProfit(historicalData[historicalData.length - 1].profit);
 
-        setProfitData(historicalData);
-        setCumulativeProfit(historicalData[historicalData.length - 1].profit);
+    // Generate initial trades
+    const initialTrades: Trade[] = [];
+    for (let i = 0; i < 15; i++) {
+      const trade = generateTrade();
+      trade.timestamp = Date.now() - (15 - i) * 5000; // Stagger timestamps
+      initialTrades.push(trade);
+    }
+    setTrades(initialTrades);
 
-        // Generate initial trades
-        const initialTrades: Trade[] = [];
-        for (let i = 0; i < 15; i++) {
-          const trade = generateTrade();
-          trade.timestamp = Date.now() - (15 - i) * 5000; // Stagger timestamps
-          initialTrades.push(trade);
-        }
-        setTrades(initialTrades);
+    // Initialize trade count with historical value (simulating 24h of trading)
+    const initialTradeCount = 1847; // Realistic starting point for 24h
+    setTotalTradeCount(initialTradeCount);
 
-        // Initialize trade count with historical value (simulating 24h of trading)
-        const initialTradeCount = 1847; // Realistic starting point for 24h
-        setTotalTradeCount(initialTradeCount);
+    // Initialize volume based on average trade volume
+    const avgTradeVolume = 154; // Average $ per trade
+    setTotalVolume(initialTradeCount * avgTradeVolume);
 
-        // Initialize volume based on average trade volume
-        const avgTradeVolume = 154; // Average $ per trade
-        setTotalVolume(initialTradeCount * avgTradeVolume);
+    // Generate initial positions
+    const initialPositions: Position[] = [];
+    for (let i = 0; i < 6; i++) {
+      initialPositions.push(generatePosition());
+    }
+    setPositions(initialPositions);
 
-        // Generate initial positions
-        const initialPositions: Position[] = [];
-        for (let i = 0; i < 6; i++) {
-          initialPositions.push(generatePosition());
-        }
-        setPositions(initialPositions);
-      }
-
-      setIsLoaded(true);
-    };
-
-    init();
+    // Load saved state in background (non-blocking)
+    setTimeout(() => loadState(), 100);
   }, [loadState, generateTrade, generatePosition]);
 
   // Add new trade simulation (throttled to reduce jank)
