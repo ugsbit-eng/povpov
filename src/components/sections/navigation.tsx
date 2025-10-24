@@ -164,7 +164,7 @@ export default function Navigation() {
           </Link>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Open navigation menu">
                 <Menu className="h-6 w-6 text-white" />
               </Button>
             </SheetTrigger>
@@ -180,7 +180,7 @@ export default function Navigation() {
                   />
                 </Link>
                 <SheetClose asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" aria-label="Close navigation menu">
                     <X className="h-6 w-6 text-text-secondary" />
                   </Button>
                 </SheetClose>

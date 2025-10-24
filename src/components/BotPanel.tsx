@@ -107,6 +107,7 @@ export default function BotPanel() {
             className="w-28 px-3 py-2 rounded-lg bg-background-secondary border border-border-subtle text-text-primary placeholder:text-text-muted"
             placeholder="Seed…"
             inputMode="numeric"
+            aria-label="Simulation seed number"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 const n = parseInt((e.target as HTMLInputElement).value || "");
