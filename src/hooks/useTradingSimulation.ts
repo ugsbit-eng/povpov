@@ -34,6 +34,8 @@ export function useTradingSimulation() {
   const tradeIdCounter = useRef(0);
   const positionIdCounter = useRef(0);
   const startTime = useRef(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+  const [isLoaded, setIsLoaded] = useState(false);
+  const saveTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Generate random trade
   const generateTrade = useCallback((): Trade => {
