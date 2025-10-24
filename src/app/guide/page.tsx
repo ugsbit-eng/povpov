@@ -9,7 +9,7 @@ export default function GuidePage() {
         <div className="absolute inset-0 opacity-30">
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/af5db15b-f5d8-4f95-970a-a043630c22a7-goodcrypto-app/assets/svgs/lines-bg-3.svg?"
-            alt=""
+            alt="Decorative background pattern with geometric lines"
             fill
             className="object-cover"
           />
