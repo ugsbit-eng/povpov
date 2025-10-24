@@ -89,7 +89,7 @@ export function useBotSim() {
     setIsClient(true);
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) {
+      if (raw && raw.trim()) {
         const s = JSON.parse(raw) as SimState;
         if (s.dayKey !== fmtDayKey()) {
           s.pnlToday = 0;
@@ -97,7 +97,10 @@ export function useBotSim() {
         }
         setState(s);
       }
-    } catch {}
+    } catch (e) {
+      // Silently ignore parse errors and use default state
+      localStorage.removeItem(KEY);
+    }
   }, []);
 
   const rngRef = React.useRef(mulberry32(state.seed));
