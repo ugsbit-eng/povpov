@@ -106,25 +106,10 @@ export function useTradingSimulation() {
     // fetch('/api/bot/state')...
   }, []);
 
-  // Save state to database (non-blocking, fire and forget)
+  // PERSISTENCE TEMPORARILY DISABLED FOR PERFORMANCE TESTING
   const saveState = useCallback(() => {
-    fetch('/api/bot/state', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        trades: trades.slice(0, 50), // Only save recent 50 trades
-        positions,
-        metrics: {
-          cumulativeProfit,
-          activeBots,
-          totalTradeCount,
-          totalVolume,
-          isRunning,
-          profitData,
-        },
-      }),
-    }).catch(err => console.error('Save failed:', err));
-  }, [trades, positions, cumulativeProfit, activeBots, totalTradeCount, totalVolume, isRunning, profitData]);
+    // Disabled - no database saves happening
+  }, []);
 
   // Initialize immediately, then load saved state in background
   useEffect(() => {
