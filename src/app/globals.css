@@ -414,3 +414,36 @@ nextjs-portal {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Animated glowing gradient border */
+@keyframes glowGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.glow-gradient-border {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  background: linear-gradient(120deg, rgba(34,197,94,0.6), rgba(56,189,248,0.6), rgba(168,85,247,0.6), rgba(34,197,94,0.6));
+  background-size: 300% 300%;
+  animation: glowGradientShift 8s ease-in-out infinite;
+}
+
+.glow-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(18px);
+  opacity: 0.35;
+  z-index: -1;
+}
+
+.glow-gradient-border > .glow-inner,
+.glow-gradient-border > .rounded-\[inherit\] {
+  border-radius: inherit;
+  background: var(--color-background-secondary);
+}
