@@ -44,9 +44,9 @@ export default function Guide2Page() {
               "Settings & Customization", "User Interface", "Setup Guide",
               "Optimization", "Security", "Performance Metrics",
               "FAQ", "Future Roadmap", "Glossary"].
-              map((item, idx) =>
+              map((item) =>
               <a
-                key={idx}
+                key={item}
                 href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
                 className="flex items-center gap-2 p-3 bg-background-tertiary rounded-lg border border-border-subtle hover:border-primary-green transition-all text-sm text-text-secondary hover:text-primary-green">
 

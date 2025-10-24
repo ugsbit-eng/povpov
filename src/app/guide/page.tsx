@@ -113,8 +113,8 @@ export default function GuidePage() {
                   title: "Launch and Monitor",
                   description: "Activate your bot and monitor performance through the dashboard. Adjust parameters as needed based on market conditions."
                 }
-              ].map((item, index) => (
-                <div key={index} className="flex gap-6 items-start p-6 bg-background-tertiary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
+              ].map((item) => (
+                <div key={item.step} className="flex gap-6 items-start p-6 bg-background-tertiary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
                   <div className="flex-shrink-0 w-16 h-16 bg-primary-green/10 rounded-full flex items-center justify-center">
                     <span className="text-2xl font-bold text-primary-green">{item.step}</span>
                   </div>
@@ -490,8 +490,8 @@ export default function GuidePage() {
                   question: "Can I run multiple bots at the same time?",
                   answer: "Yes! You can run multiple bots with different strategies and tokens simultaneously. This allows you to diversify your trading approach and spread risk across different assets."
                 }
-              ].map((faq, index) => (
-                <div key={index} className="p-6 bg-background-secondary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
+              ].map((faq) => (
+                <div key={faq.question} className="p-6 bg-background-secondary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
                   <h3 className="text-lg font-semibold text-text-primary mb-3">{faq.question}</h3>
                   <p className="text-text-secondary leading-relaxed">{faq.answer}</p>
                 </div>
