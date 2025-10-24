@@ -92,6 +92,7 @@ export default function KBFeedbackWidget({ articleId }: KBFeedbackWidgetProps) {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="What could we improve? (optional)"
+            aria-label="Feedback comment"
             className="w-full px-4 py-3 bg-background-tertiary border border-border-subtle rounded-lg text-text-primary placeholder:text-text-muted focus:border-primary-green focus:outline-none focus:ring-2 focus:ring-primary-green/20 resize-none"
             rows={3}
           />
