@@ -133,7 +133,7 @@ export default function AboutPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Peluka Chavez */}
-            <div className="glow-gradient-border rounded-3xl">
+            <div className="conic-glow-border rounded-3xl">
               <div className="bg-background-secondary border border-border-subtle rounded-[inherit] p-8 text-center flex flex-col transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
               <div className="flex-grow flex items-center justify-center mb-8 h-[275px]">
                 <div className="relative w-[269px] h-[275px]">
