@@ -160,7 +160,7 @@ export default function BotPanel() {
         <div className="flex flex-col gap-4 md:gap-6">
           {/* Recent Trades */}
           <div className="border border-border-subtle rounded-2xl p-4 md:p-6 bg-background-secondary/30">
-            <h3 className="text-lg font-bold text-white mb-4">Recent Trades</h3>
+            <h2 className="text-lg font-bold text-white mb-4">Recent Trades</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -201,7 +201,7 @@ export default function BotPanel() {
 
           {/* Open Positions */}
           <div className="border border-border-subtle rounded-2xl p-4 md:p-6 bg-background-secondary/30">
-            <h3 className="text-lg font-bold text-white mb-4">Open Positions</h3>
+            <h2 className="text-lg font-bold text-white mb-4">Open Positions</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -241,7 +241,7 @@ export default function BotPanel() {
         <div className="flex flex-col gap-4 md:gap-6">
           {/* Order Book */}
           <div className="border border-border-subtle rounded-2xl p-4 md:p-6 bg-background-secondary/30">
-            <h3 className="text-lg font-bold text-white mb-4">Order Book</h3>
+            <h2 className="text-lg font-bold text-white mb-4">Order Book</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-sm font-semibold text-primary-green mb-2">Bids</div>
@@ -268,7 +268,7 @@ export default function BotPanel() {
 
           {/* Strategy Signals */}
           <div className="border border-border-subtle rounded-2xl p-4 md:p-6 bg-background-secondary/30">
-            <h3 className="text-lg font-bold text-white mb-4">Strategy Signals</h3>
+            <h2 className="text-lg font-bold text-white mb-4">Strategy Signals</h2>
             <ul className="space-y-2 text-sm text-text-secondary">
               <li>Setup A detected — confidence {(60 + Math.random() * 30) | 0}% — TTL {(10 + Math.random() * 40) | 0}s</li>
               <li>Liquidity sweep — confidence {(55 + Math.random() * 25) | 0}% — TTL {(10 + Math.random() * 40) | 0}s</li>
@@ -278,7 +278,7 @@ export default function BotPanel() {
 
           {/* System Status */}
           <div className="border border-border-subtle rounded-2xl p-4 md:p-6 bg-background-secondary/30">
-            <h3 className="text-lg font-bold text-white mb-4">System Status</h3>
+            <h2 className="text-lg font-bold text-white mb-4">System Status</h2>
             <div className="grid grid-cols-3 gap-4 text-sm">
               <div>
                 <div className="text-text-muted">Engine</div>
