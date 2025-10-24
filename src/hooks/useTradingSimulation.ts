@@ -157,8 +157,8 @@ export function useTradingSimulation() {
     }
     setPositions(initialPositions);
 
-    // Load saved state in background (non-blocking)
-    setTimeout(() => loadState(), 100);
+    // PERSISTENCE DISABLED - no background load
+    // setTimeout(() => loadState(), 100);
   }, [loadState, generateTrade, generatePosition]);
 
   // Add new trade simulation (throttled to reduce jank)
