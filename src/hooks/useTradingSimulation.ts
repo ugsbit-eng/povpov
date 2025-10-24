@@ -310,44 +310,25 @@ export function useTradingSimulation() {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  // Periodic save (every 10 seconds)
+  // Periodic save (every 15 seconds) - starts after 20s delay
   useEffect(() => {
-    if (!isLoaded) return;
+    const startDelay = setTimeout(() => {
+      const interval = setInterval(() => {
+        saveState();
+      }, 15000);
 
-    const interval = setInterval(() => {
-      saveState();
-    }, 10000);
+      return () => clearInterval(interval);
+    }, 20000);
 
-    return () => clearInterval(interval);
-  }, [isLoaded, saveState]);
+    return () => clearTimeout(startDelay);
+  }, [saveState]);
 
   // Save on unmount
   useEffect(() => {
     return () => {
-      if (isLoaded) {
-        saveState();
-      }
-    };
-  }, [isLoaded, saveState]);
-
-  // Debounced save when isRunning changes
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-
-    saveTimeoutRef.current = setTimeout(() => {
       saveState();
-    }, 500);
-
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
-      }
     };
-  }, [isRunning, isLoaded, saveState]);
+  }, [saveState]);
 
   // Calculate metrics
   const metrics: MetricData = {
