@@ -98,16 +98,18 @@ export function useTradingSimulation() {
     };
   }, []);
 
-  // Load state from database
-  const loadState = useCallback(async () => {
-    try {
-      const response = await fetch('/api/bot/state');
-      if (response.ok) {
-        const data = await response.json();
+  // Load state from database (background, non-blocking)
+  const loadState = useCallback(() => {
+    if (hasLoadedRef.current) return;
+    hasLoadedRef.current = true;
 
-        if (data.trades && data.trades.length > 0) {
+    fetch('/api/bot/state')
+      .then(response => response.ok ? response.json() : null)
+      .then(data => {
+        if (!data) return;
+
+        if (data.trades?.length > 0) {
           setTrades(data.trades);
-          // Update counter to avoid ID conflicts
           const maxId = Math.max(...data.trades.map((t: Trade) => {
             const match = t.id.match(/trade-(\d+)/);
             return match ? parseInt(match[1]) : 0;
@@ -115,7 +117,7 @@ export function useTradingSimulation() {
           tradeIdCounter.current = maxId + 1;
         }
 
-        if (data.positions && data.positions.length > 0) {
+        if (data.positions?.length > 0) {
           setPositions(data.positions);
           const maxId = Math.max(...data.positions.map((p: Position) => {
             const match = p.id.match(/pos-(\d+)/);
@@ -130,15 +132,12 @@ export function useTradingSimulation() {
           setTotalTradeCount(data.metrics.totalTradeCount);
           setTotalVolume(data.metrics.totalVolume);
           setIsRunning(data.metrics.isRunning);
-          setProfitData(data.metrics.profitData);
+          if (data.metrics.profitData?.length > 0) {
+            setProfitData(data.metrics.profitData);
+          }
         }
-
-        return true;
-      }
-    } catch (error) {
-      console.error('Failed to load bot state:', error);
-    }
-    return false;
+      })
+      .catch(err => console.error('Failed to load bot state:', err));
   }, []);
 
   // Save state to database
