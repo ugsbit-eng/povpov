@@ -60,6 +60,17 @@
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
+/* Ensure proper height and scrolling in all contexts including iframes */
+html {
+  height: auto;
+  min-height: 100%;
+}
+
+body {
+  height: auto;
+  min-height: 100vh;
+}
+
 @theme {
   /* Shadcn/UI colors - Dark theme */
   --color-background: #0A1929;
