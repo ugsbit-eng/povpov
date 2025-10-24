@@ -24,8 +24,8 @@ export default function KBFeedbackWidget({ articleId }: KBFeedbackWidgetProps) {
   };
 
   const submitFeedback = (type: string, commentText: string) => {
-    // In a real implementation, send to analytics or backend
-    console.log("Feedback submitted:", { articleId, type, comment: commentText });
+    // TODO: Send to analytics or backend
+    // Analytics tracking would go here
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
