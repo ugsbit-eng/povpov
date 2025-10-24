@@ -98,46 +98,12 @@ export function useTradingSimulation() {
     };
   }, []);
 
-  // Load state from database (background, non-blocking)
+  // PERSISTENCE TEMPORARILY DISABLED FOR PERFORMANCE TESTING
   const loadState = useCallback(() => {
-    if (hasLoadedRef.current) return;
-    hasLoadedRef.current = true;
-
-    fetch('/api/bot/state')
-      .then(response => response.ok ? response.json() : null)
-      .then(data => {
-        if (!data) return;
-
-        if (data.trades?.length > 0) {
-          setTrades(data.trades);
-          const maxId = Math.max(...data.trades.map((t: Trade) => {
-            const match = t.id.match(/trade-(\d+)/);
-            return match ? parseInt(match[1]) : 0;
-          }));
-          tradeIdCounter.current = maxId + 1;
-        }
-
-        if (data.positions?.length > 0) {
-          setPositions(data.positions);
-          const maxId = Math.max(...data.positions.map((p: Position) => {
-            const match = p.id.match(/pos-(\d+)/);
-            return match ? parseInt(match[1]) : 0;
-          }));
-          positionIdCounter.current = maxId + 1;
-        }
-
-        if (data.metrics) {
-          setCumulativeProfit(data.metrics.cumulativeProfit);
-          setActiveBots(data.metrics.activeBots);
-          setTotalTradeCount(data.metrics.totalTradeCount);
-          setTotalVolume(data.metrics.totalVolume);
-          setIsRunning(data.metrics.isRunning);
-          if (data.metrics.profitData?.length > 0) {
-            setProfitData(data.metrics.profitData);
-          }
-        }
-      })
-      .catch(err => console.error('Failed to load bot state:', err));
+    // Disabled - remove this comment to re-enable
+    // if (hasLoadedRef.current) return;
+    // hasLoadedRef.current = true;
+    // fetch('/api/bot/state')...
   }, []);
 
   // Save state to database (non-blocking, fire and forget)
