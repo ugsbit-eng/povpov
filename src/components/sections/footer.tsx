@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Image from "next/image";
 import { ChevronDown, Facebook, Linkedin, Send, Twitter, Youtube } from "lucide-react";
 import { FaMediumM } from "react-icons/fa";
 
