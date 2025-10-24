@@ -501,8 +501,7 @@ export default function AboutPage() {
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/af5db15b-f5d8-4f95-970a-a043630c22a7-goodcrypto-app/assets/images/base-join-bg-10.jpg?"
             alt="Abstract background with blue and teal gradients and geometric patterns"
             fill
-            className="object-cover"
-            quality={100} />
+            className="object-cover" />
 
         </div>
 

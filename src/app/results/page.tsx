@@ -474,7 +474,6 @@ export default function ResultsPage() {
             alt="Abstract background with blue and teal gradients and geometric patterns"
             fill
             className="object-cover"
-            quality={100}
           />
         </div>
 

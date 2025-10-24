@@ -16,7 +16,7 @@ const JoinRevolutionSection = () => {
           alt="Abstract background with blue and teal gradients and geometric patterns"
           fill
           className="object-cover"
-          quality={100}
+          priority
         />
       </div>
 
