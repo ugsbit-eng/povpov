@@ -422,28 +422,39 @@ nextjs-portal {
   100% { background-position: 0% 50%; }
 }
 
-.glow-gradient-border {
+/* Conic gradient glow border (reference-inspired) */
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes rotating {
+  0% { --a: 0deg; }
+  100% { --a: 360deg; }
+}
+
+.conic-glow-border {
   position: relative;
   border-radius: var(--radius-lg);
   padding: 2px;
-  background: linear-gradient(120deg, rgba(34,197,94,0.6), rgba(56,189,248,0.6), rgba(168,85,247,0.6), rgba(34,197,94,0.6));
-  background-size: 300% 300%;
-  animation: glowGradientShift 8s ease-in-out infinite;
+  background: repeating-conic-gradient(from var(--a), #0f0, #ff0, #0ff, #f0f, #0ff);
+  animation: rotating 4s linear infinite;
 }
 
-.glow-gradient-border::before {
+.conic-glow-border::after {
   content: "";
   position: absolute;
-  inset: -8px;
+  inset: 0;
   border-radius: inherit;
-  background: inherit;
-  filter: blur(18px);
-  opacity: 0.35;
+  background: repeating-conic-gradient(from var(--a), #0f0, #ff0, #0ff, #f0f, #0ff);
+  animation: rotating 4s linear infinite;
+  filter: blur(40px);
+  opacity: 0.75;
   z-index: -1;
 }
 
-.glow-gradient-border > .glow-inner,
-.glow-gradient-border > .rounded-\[inherit\] {
+.conic-glow-border > .rounded-\[inherit\] {
   border-radius: inherit;
   background: var(--color-background-secondary);
 }
