@@ -226,12 +226,17 @@ export function useBotSim() {
     };
     document.addEventListener("visibilitychange", onVis);
     
-    const onStorage = (e: StorageEvent) => { 
-      if (e.key === KEY && e.newValue) { 
-        try { 
-          setState(JSON.parse(e.newValue)); 
-        } catch {} 
-      } 
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === KEY && e.newValue && e.newValue.trim()) {
+        try {
+          setState(JSON.parse(e.newValue));
+        } catch (error) {
+          // Silently ignore parse errors
+          if (e.newValue) {
+            localStorage.removeItem(KEY);
+          }
+        }
+      }
     };
     window.addEventListener("storage", onStorage);
     
