@@ -593,8 +593,8 @@ export default function Guide2Page() {
                 function: "Alerts the user to key events, trade executions, and performance milestones.",
                 details: "Supports configurable alerts via Telegram, Discord Webhook, and Email."
               }].
-              map((module, idx) =>
-              <div key={idx} className="p-6 bg-background-tertiary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
+              map((module) =>
+              <div key={module.name} className="p-6 bg-background-tertiary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
                   <h3 className="text-xl font-bold text-primary-green mb-3">{module.name}</h3>
                   <p className="text-text-secondary mb-3">{module.function}</p>
                   <p className="text-sm text-text-muted">{module.details}</p>
@@ -679,8 +679,8 @@ export default function Guide2Page() {
                 title: "Optional: Advanced Mode (For Experienced Traders)",
                 desc: "For experienced traders who want full control, enable . This unlocks deep strategy customization: multi-layer stop loss behavior, trailing stop parameters, take-profit scaling, custom signal filters, order routing preferences, and experimental BETA features for fine-grained order execution. Use this only if you understand the mechanics, otherwise stick with Basic."
               }].
-              map((step, idx) =>
-              <div key={idx} className="flex gap-6 items-start p-6 bg-background-secondary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
+              map((step) =>
+              <div key={step.step} className="flex gap-6 items-start p-6 bg-background-secondary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
                   <div className="flex-shrink-0 w-16 h-16 bg-primary-green/10 rounded-full flex items-center justify-center">
                     <span className="text-2xl font-bold text-primary-green">{step.step}</span>
                   </div>
@@ -798,8 +798,8 @@ export default function Guide2Page() {
                 q: "Is it profitable during sideways markets?",
                 a: "The P.O.V Hunter Bot is designed to be profitable in sideways markets primarily through the Arbitrage and tight-range Scalping strategies, which thrive on small, temporary inefficiencies that are more common when the market lacks a clear trend."
               }].
-              map((faq, idx) =>
-              <div key={idx} className="p-6 bg-background-secondary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
+              map((faq) =>
+              <div key={faq.q} className="p-6 bg-background-secondary rounded-xl border border-border-subtle hover:border-primary-green transition-all">
                   <h3 className="text-lg font-semibold text-text-primary mb-3">{faq.q}</h3>
                   <p className="text-text-secondary leading-relaxed">{faq.a}</p>
                 </div>
@@ -886,8 +886,8 @@ export default function Guide2Page() {
               { term: "TPS", def: "Transactions Per Second. A measure of the network's capacity to process transactions." },
               { term: "Trailing Stop-Loss", def: "A dynamic stop-loss order that adjusts as the price moves favorably, locking in a minimum profit while allowing for maximum gain." },
               { term: "VWAP", def: "Volume-Weighted Average Price. The average price an asset has traded at throughout the day, based on both volume and price." }].
-              map((item, idx) =>
-              <div key={idx} className="p-6 bg-background-secondary rounded-xl border border-border-subtle">
+              map((item) =>
+              <div key={item.term} className="p-6 bg-background-secondary rounded-xl border border-border-subtle">
                   <h3 className="text-lg font-semibold text-primary-green mb-2">{item.term}</h3>
                   <p className="text-sm text-text-secondary">{item.def}</p>
                 </div>
