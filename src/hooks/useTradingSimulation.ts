@@ -140,28 +140,24 @@ export function useTradingSimulation() {
       .catch(err => console.error('Failed to load bot state:', err));
   }, []);
 
-  // Save state to database
-  const saveState = useCallback(async () => {
-    try {
-      await fetch('/api/bot/state', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          trades,
-          positions,
-          metrics: {
-            cumulativeProfit,
-            activeBots,
-            totalTradeCount,
-            totalVolume,
-            isRunning,
-            profitData,
-          },
-        }),
-      });
-    } catch (error) {
-      console.error('Failed to save bot state:', error);
-    }
+  // Save state to database (non-blocking, fire and forget)
+  const saveState = useCallback(() => {
+    fetch('/api/bot/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        trades: trades.slice(0, 50), // Only save recent 50 trades
+        positions,
+        metrics: {
+          cumulativeProfit,
+          activeBots,
+          totalTradeCount,
+          totalVolume,
+          isRunning,
+          profitData,
+        },
+      }),
+    }).catch(err => console.error('Save failed:', err));
   }, [trades, positions, cumulativeProfit, activeBots, totalTradeCount, totalVolume, isRunning, profitData]);
 
   // Initialize immediately, then load saved state in background
