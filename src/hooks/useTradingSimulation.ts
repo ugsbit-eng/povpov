@@ -98,6 +98,73 @@ export function useTradingSimulation() {
     };
   }, []);
 
+  // Load state from database
+  const loadState = useCallback(async () => {
+    try {
+      const response = await fetch('/api/bot/state');
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.trades && data.trades.length > 0) {
+          setTrades(data.trades);
+          // Update counter to avoid ID conflicts
+          const maxId = Math.max(...data.trades.map((t: Trade) => {
+            const match = t.id.match(/trade-(\d+)/);
+            return match ? parseInt(match[1]) : 0;
+          }));
+          tradeIdCounter.current = maxId + 1;
+        }
+
+        if (data.positions && data.positions.length > 0) {
+          setPositions(data.positions);
+          const maxId = Math.max(...data.positions.map((p: Position) => {
+            const match = p.id.match(/pos-(\d+)/);
+            return match ? parseInt(match[1]) : 0;
+          }));
+          positionIdCounter.current = maxId + 1;
+        }
+
+        if (data.metrics) {
+          setCumulativeProfit(data.metrics.cumulativeProfit);
+          setActiveBots(data.metrics.activeBots);
+          setTotalTradeCount(data.metrics.totalTradeCount);
+          setTotalVolume(data.metrics.totalVolume);
+          setIsRunning(data.metrics.isRunning);
+          setProfitData(data.metrics.profitData);
+        }
+
+        return true;
+      }
+    } catch (error) {
+      console.error('Failed to load bot state:', error);
+    }
+    return false;
+  }, []);
+
+  // Save state to database
+  const saveState = useCallback(async () => {
+    try {
+      await fetch('/api/bot/state', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trades,
+          positions,
+          metrics: {
+            cumulativeProfit,
+            activeBots,
+            totalTradeCount,
+            totalVolume,
+            isRunning,
+            profitData,
+          },
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to save bot state:', error);
+    }
+  }, [trades, positions, cumulativeProfit, activeBots, totalTradeCount, totalVolume, isRunning, profitData]);
+
   // Initialize historical data
   useEffect(() => {
     // Generate 24 hours of profit data (hourly points)
