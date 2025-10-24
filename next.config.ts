@@ -34,18 +34,18 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
   webpack: (config, { dev, isServer }) => {
-    // Add component tagger loader for vibe annotations (development only, client-side only)
-    if (dev && !isServer) {
-      config.module.rules.push({
-        test: /\.(tsx|ts|jsx|js)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: path.resolve(__dirname, 'src/visual-edits/component-tagger-loader.js'),
-          },
-        ],
-      });
-    }
+    // Component tagger loader disabled for performance - re-enable when needed for visual edits
+    // if (dev && !isServer) {
+    //   config.module.rules.push({
+    //     test: /\.(tsx|ts|jsx|js)$/,
+    //     exclude: /node_modules/,
+    //     use: [
+    //       {
+    //         loader: path.resolve(__dirname, 'src/visual-edits/component-tagger-loader.js'),
+    //       },
+    //     ],
+    //   });
+    // }
     return config;
   },
 };
