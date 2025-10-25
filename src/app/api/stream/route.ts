@@ -5,40 +5,33 @@ export const runtime = "nodejs";
 const enc = new TextEncoder();
 const send = (obj: any) => enc.encode(`data: ${JSON.stringify(obj)}\n\n`);
 
-export async function GET(req: Request) {
+export async function GET() {
   const stream = new ReadableStream<Uint8Array>({
-    start(controller) {
-      let closed = false;
-      const safeEnqueue = (chunk: Uint8Array) => {
-        if (closed) return;
-        try { controller.enqueue(chunk); } catch { closed = true; cleanup(); }
-      };
-      const push = (data: any) => safeEnqueue(send(data));
-
-      // initial payload
+    async start(controller) {
+      const push = (data: any) => controller.enqueue(send(data));
       push({ type: "kpis", data: getKPIs() });
-
-      // timers
+      
       const iv = setInterval(() => push({ type: "kpis", data: getKPIs() }), 1000);
-      const hb = setInterval(() => safeEnqueue(enc.encode(":hb\n\n")), 10000);
+      const hb = setInterval(() => controller.enqueue(enc.encode(":hb\n\n")), 10000);
 
-      // cleanup
+      // Proper cleanup when stream is cancelled
       const cleanup = () => {
-        if (closed) return;
-        closed = true;
         clearInterval(iv);
         clearInterval(hb);
-        try { controller.close(); } catch {}
       };
 
-      // client abort
-      try { req.signal.addEventListener("abort", cleanup); } catch {}
-
+      // Handle abort signal for proper cleanup
+      const abortController = new AbortController();
+      abortController.signal.addEventListener('abort', cleanup);
+      
+      // Store cleanup function for potential manual cleanup
       (controller as any).cleanup = cleanup;
     },
     cancel() {
-      const c = (this as any).cleanup;
-      if (c) c();
+      // This is called when the client disconnects
+      if ((this as any).cleanup) {
+        (this as any).cleanup();
+      }
     }
   });
 

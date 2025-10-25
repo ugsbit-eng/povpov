@@ -59,9 +59,11 @@ class SimulationManager {
 
   async start() {
     if (this.isRunning) {
+      console.log('Simulations already running');
       return;
     }
 
+    console.log('Starting global simulation manager for all strategies...');
     this.isRunning = true;
 
     // Initialize pending updates for each strategy
@@ -123,6 +125,7 @@ class SimulationManager {
       simulation.start();
       this.simulations.set(strategy.id, simulation);
 
+      console.log(`✓ Started simulation for ${strategy.name}`);
     } catch (error) {
       console.error(`Error initializing strategy ${strategy.id}:`, error);
     }
@@ -203,11 +206,13 @@ class SimulationManager {
   }
 
   stop() {
+    console.log('Stopping global simulation manager...');
     this.isRunning = false;
 
     // Stop all simulations
     this.simulations.forEach((simulation, strategyId) => {
       simulation.stop();
+      console.log(`✓ Stopped simulation for ${strategyId}`);
     });
 
     this.simulations.clear();
@@ -239,3 +244,4 @@ export const simulationManager =
 if (process.env.NODE_ENV !== 'production') {
   globalForSimManager.simulationManager = simulationManager;
 }
+

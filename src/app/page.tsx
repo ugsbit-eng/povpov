@@ -6,19 +6,6 @@ import OtherTradingTools from "@/components/sections/other-trading-tools";
 import InfoCards from "@/components/sections/info-cards";
 import JoinRevolutionSection from "@/components/sections/join-revolution";
 import Footer from "@/components/sections/footer";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Home",
-  description: "Discover P.O.V Sniper BOT's advanced automated trading strategies for Solana. Grid trading, DCA bots, and quantum-powered algorithms for 24/7 profitable trading.",
-  openGraph: {
-    title: "P.O.V Sniper BOT — Advanced Solana Trading Automation",
-    description: "Grid trading, DCA bots, and quantum-powered algorithms for 24/7 profitable trading on Solana.",
-  },
-  alternates: {
-    canonical: "https://pov-sniper.com"
-  }
-};
 
 export default function Page() {
   return (
