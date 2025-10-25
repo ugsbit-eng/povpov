@@ -402,7 +402,14 @@ export default function HoverReceiver() {
   const [hoverBoxes, setHoverBoxes] = useState<Box[]>([]);
   const [focusBox, setFocusBox] = useState<Box>(null);
   const [focusedElementId, setFocusedElementId] = useState<string | null>(null);
-  const [isVisualEditMode, setIsVisualEditMode] = useState(false);
+  const [isVisualEditMode, setIsVisualEditMode] = useState(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem(VISUAL_EDIT_MODE_KEY);
+      return stored === "true";
+    }
+    return false;
+  });
   const [isResizing, setIsResizing] = useState(false);
   const [resizeHandle, setResizeHandle] = useState<string | null>(null);
   const [resizeStart, setResizeStart] = useState<{
@@ -446,18 +453,59 @@ export default function HoverReceiver() {
   // Keep ref in sync with state and persist to localStorage
   useEffect(() => {
     isVisualEditModeRef.current = isVisualEditMode;
+    // Persist to localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem(VISUAL_EDIT_MODE_KEY, String(isVisualEditMode));
+    }
   }, [isVisualEditMode]);
 
-  // Acknowledge only when mode is explicitly enabled; no auto-restore to avoid layout changes
+  // On mount, notify parent if visual edit mode was restored from localStorage
   useEffect(() => {
-    if (!isVisualEditMode) return;
-    try {
+    if (isVisualEditMode) {
+      // Send acknowledgement to parent that visual edit mode is active
+      // This will sync the parent's state with our restored state
       window.parent.postMessage(
         { type: CHANNEL, msg: "VISUAL_EDIT_MODE_ACK", active: true },
         "*"
       );
-    } catch {}
-  }, [isVisualEditMode]);
+
+      // Also send a special message to indicate this was restored from localStorage
+      window.parent.postMessage(
+        { type: CHANNEL, msg: "VISUAL_EDIT_MODE_RESTORED", active: true },
+        "*"
+      );
+
+      // Restore focused element after a short delay to ensure DOM is ready
+      setTimeout(() => {
+        if (typeof window !== "undefined") {
+          // Restore focused element
+          const focusedData = localStorage.getItem(FOCUSED_ELEMENT_KEY);
+          if (focusedData) {
+            try {
+              const { id } = JSON.parse(focusedData);
+              const element = document.querySelector(
+                `[data-orchids-id="${id}"]`
+              ) as HTMLElement;
+
+              if (element) {
+                // Simulate a click on the element to restore focus
+                const rect = element.getBoundingClientRect();
+                const clickEvent = new MouseEvent("click", {
+                  clientX: rect.left + rect.width / 2,
+                  clientY: rect.top + rect.height / 2,
+                  bubbles: true,
+                  cancelable: true,
+                });
+                element.dispatchEvent(clickEvent);
+              }
+            } catch {
+              // Ignore parsing errors
+            }
+          }
+        }
+      }, 500); // Wait 500ms for DOM to be fully ready
+    }
+  }, []); // Run only on mount
 
   // Helper function to expand box dimensions
   const expandBox = (rect: DOMRect): Box => ({

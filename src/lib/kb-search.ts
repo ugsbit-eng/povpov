@@ -69,4 +69,6 @@ export function initializeLunrIndex() {
   //   
   //   documents.forEach(doc => this.add(doc));
   // });
+  
+  console.log("Lunr index initialized (placeholder)");
 }

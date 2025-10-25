@@ -84,8 +84,8 @@ export default function AboutPage() {
       {/* ORIGIN OF THE TRINITY */}
       <section id="origin" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
-            <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
+          <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
+            <div className="h-full w-full rounded-[23px] bg-background-tertiary/60 p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
                   <p className="text-sm font-semibold uppercase tracking-wider text-primary-green">Origin of the Trinity</p>
@@ -133,8 +133,7 @@ export default function AboutPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Peluka Chavez */}
-            <div className="conic-glow-border rounded-3xl">
-              <div className="bg-background-secondary border border-border-subtle rounded-[inherit] p-8 text-center flex flex-col transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
+            <div className="bg-background-secondary border border-border-subtle rounded-3xl p-8 text-center flex flex-col transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
               <div className="flex-grow flex items-center justify-center mb-8 h-[275px]">
                 <div className="relative w-[269px] h-[275px]">
                   {/* Soft ambient occlusion - faint contact shadow */}
@@ -265,7 +264,6 @@ export default function AboutPage() {
               <p className="text-base text-text-secondary leading-normal">
                 He was there from the first transactions on the blockchain. Thousands of Bitcoins moved through his wallets long before "crypto trader" was a title. Peluka reads patterns without tools, senses momentum without indicators. He mapped the rules that became the foundation of POV. Where others saw volatility, he saw structure — and that structure became code.
               </p>
-            </div>
             </div>
 
             {/* Obsidian Veil */}
@@ -426,8 +424,8 @@ export default function AboutPage() {
       {/* TRINITY SYSTEM */}
       <section id="trinity-system" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
-            <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
+          <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
+            <div className="h-full w-full rounded-[23px] bg-background-tertiary/60 p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="flex items-center justify-center order-2 md:order-1">
                   <Image
@@ -463,8 +461,8 @@ export default function AboutPage() {
       {/* PHILOSOPHY & VALUES */}
       <section id="values" className="bg-background-primary py-20 md:py-[104px]">
         <div className="mx-auto max-w-[1200px] px-6 md:px-12 lg:px-20">
-          <div className="relative bg-background-secondary border border-border-subtle rounded-3xl p-8 sm:p-12 lg:p-[60px] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary-green/30 hover:shadow-[0_0_40px_rgba(0,255,127,0.15)]">
-            <div className="h-full w-full rounded-[inherit] bg-transparent p-0 backdrop-blur-0">
+          <div className="relative rounded-3xl bg-[linear-gradient(119deg,_#00d9ff,_#00ff7f)] p-[1px] shadow-[0_0_40px_rgba(0,217,255,0.25)]">
+            <div className="h-full w-full rounded-[23px] bg-background-tertiary/60 p-8 backdrop-blur-xl sm:p-12 lg:p-[60px]">
               <div className="grid items-center gap-12 md:grid-cols-2 xl:gap-20">
                 <div className="space-y-6">
                   <h2 className="text-[40px] font-bold leading-[1.3] tracking-[-0.01em] text-text-primary">
@@ -501,7 +499,8 @@ export default function AboutPage() {
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/af5db15b-f5d8-4f95-970a-a043630c22a7-goodcrypto-app/assets/images/base-join-bg-10.jpg?"
             alt="Abstract background with blue and teal gradients and geometric patterns"
             fill
-            className="object-cover" />
+            className="object-cover"
+            quality={100} />
 
         </div>
 

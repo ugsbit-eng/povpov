@@ -77,38 +77,30 @@ function defaults(seed: number): SimState {
 export function useBotSim() {
   const [running, setRunning] = React.useState(true);
   const [speed, setSpeed] = React.useState<1 | 2 | 4 | 8>(1);
-  const [isClient, setIsClient] = React.useState(false);
-
-  // Always use same default on server AND first client render
-  const [state, setState] = React.useState<SimState>(() =>
-    defaults(Math.floor(Math.random() * 1e9))
-  );
-
-  // After hydration, load from localStorage
-  React.useEffect(() => {
-    setIsClient(true);
+  const [state, setState] = React.useState<SimState>(() => {
+    if (typeof window === 'undefined') {
+      return defaults(Math.floor(Math.random() * 1e9));
+    }
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw && raw.trim()) {
+      if (raw) {
         const s = JSON.parse(raw) as SimState;
-        if (s.dayKey !== fmtDayKey()) {
-          s.pnlToday = 0;
-          s.dayKey = fmtDayKey();
+        if (s.dayKey !== fmtDayKey()) { 
+          s.pnlToday = 0; 
+          s.dayKey = fmtDayKey(); 
         }
-        setState(s);
+        return s;
       }
-    } catch (e) {
-      // Silently ignore parse errors and use default state
-      localStorage.removeItem(KEY);
-    }
-  }, []);
+    } catch {}
+    return defaults(Math.floor(Math.random() * 1e9));
+  });
 
   const rngRef = React.useRef(mulberry32(state.seed));
-  const save = (s: SimState) => {
-    if (isClient) {
-      try {
-        localStorage.setItem(KEY, JSON.stringify(s));
-      } catch {}
+  const save = (s: SimState) => { 
+    if (typeof window !== 'undefined') {
+      try { 
+        localStorage.setItem(KEY, JSON.stringify(s)); 
+      } catch {} 
     }
   };
 
@@ -226,17 +218,12 @@ export function useBotSim() {
     };
     document.addEventListener("visibilitychange", onVis);
     
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === KEY && e.newValue && e.newValue.trim()) {
-        try {
-          setState(JSON.parse(e.newValue));
-        } catch (error) {
-          // Silently ignore parse errors
-          if (e.newValue) {
-            localStorage.removeItem(KEY);
-          }
-        }
-      }
+    const onStorage = (e: StorageEvent) => { 
+      if (e.key === KEY && e.newValue) { 
+        try { 
+          setState(JSON.parse(e.newValue)); 
+        } catch {} 
+      } 
     };
     window.addEventListener("storage", onStorage);
     

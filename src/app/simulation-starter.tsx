@@ -13,6 +13,7 @@ export default function SimulationStarter() {
         
         if (data.success) {
           setStatus('running');
+          console.log('Global simulations started:', data.status);
         } else {
           setStatus('error');
           console.error('Failed to start simulations');
@@ -29,3 +30,13 @@ export default function SimulationStarter() {
   // This component doesn't render anything visible
   return null;
 }
+
+
+
+
+
+
+
+
+
+

@@ -16,7 +16,7 @@ const JoinRevolutionSection = () => {
           alt="Abstract background with blue and teal gradients and geometric patterns"
           fill
           className="object-cover"
-          priority
+          quality={100}
         />
       </div>
 
@@ -105,8 +105,8 @@ const JoinRevolutionSection = () => {
                   }}
                 >
                   <Image
-                    src="https://cdn.builder.io/api/v1/image/assets%2F6ae980b39107469596ac4ca0823e3b31%2F889ffbac84ad4a12a99fed5c7a7b68da?format=webp&width=800"
-                    alt="P.O.V robot aiming"
+                    src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/af5db15b-f5d8-4f95-970a-a043630c22a7-goodcrypto-app/assets/images/base-join-pic-11.png?"
+                    alt="3D robot mascot for Solana bot page"
                     width={462}
                     height={617}
                     className="max-w-full h-auto relative z-10"

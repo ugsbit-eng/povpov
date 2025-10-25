@@ -23,16 +23,7 @@ export function useReveal<T extends HTMLElement = HTMLElement>(className = "reve
       { threshold: 0.2 }
     );
     obs.observe(el);
-
-    // Fallback: if never observed (e.g., static design/screenshot iframes), reveal after a short delay
-    const tk = window.setTimeout(() => {
-      if (!el.classList.contains("revealed")) el.classList.add("revealed");
-    }, 1200);
-
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(tk);
-    };
+    return () => obs.disconnect();
   }, []);
 
   return ref;
