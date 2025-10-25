@@ -15,7 +15,7 @@ const OtherTradingTools = () => {
         <div className="text-left">
           <div className="mb-4 font-mono text-base text-primary-green">04.</div>
           <h3 className="mb-6 text-[32px] font-semibold leading-[1.3] text-primary-green">
-            other Solana trading tools
+            Other trading tools
           </h3>
           <div className="space-y-6 text-base leading-[1.6] text-text-secondary">
             <p>

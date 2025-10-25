@@ -20,6 +20,9 @@ export default function BotPage() {
     setIsRunning
   } = useTradingSimulation();
 
+  // Screen reader announcement for trading status
+  const statusAnnouncement = `Trading bot is ${isRunning ? 'running' : 'paused'}. Total profit: $${metrics.totalProfit24h.toFixed(0)}. Win rate: ${metrics.winRate}%.`;
+
   const networkStatus = [
     { chain: 'solana' as const, status: 'operational' as const, latency: 234 },
     { chain: 'ethereum' as const, status: 'operational' as const, latency: 187 }
@@ -27,19 +30,35 @@ export default function BotPage() {
 
   return (
     <main className="min-h-screen bg-[#0a1628] text-white">
+      {/* Screen reader status announcement */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {statusAnnouncement}
+      </div>
 
       <div className="pt-[110px] pb-[120px] lg:pt-[130px] lg:pb-[140px]">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
           
           {/* Hero Section */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-                P.O.V Trading Bot - Live Simulation
-              </h1>
-              <span className="px-4 py-2 text-lg font-bold rounded-full bg-green-500/20 text-green-400 animate-pulse">
-                LIVE
-              </span>
+          <div className="mb-12">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+                  P.O.V Trading Bot - Live Simulation
+                </h1>
+                <span className="px-4 py-2 text-lg font-bold rounded-full bg-green-500/20 text-green-400 animate-pulse">
+                  LIVE
+                </span>
+              </div>
+              <button
+                onClick={() => setIsRunning(!isRunning)}
+                className={`px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 shadow-lg whitespace-nowrap ${
+                  isRunning
+                    ? 'bg-red-500 hover:bg-red-600 hover:shadow-red-500/50'
+                    : 'bg-green-500 hover:bg-green-600 hover:shadow-green-500/50'
+                }`}
+              >
+                {isRunning ? 'Pause Simulation' : 'Resume Simulation'}
+              </button>
             </div>
             <p className="text-lg text-gray-400">
               Real-time multi-chain trading across Solana & Ethereum networks
@@ -132,9 +151,9 @@ export default function BotPage() {
           <div className="p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
             <h2 className="text-2xl font-bold text-white mb-6">Trading Pairs Breakdown</h2>
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-white/10">
+              <table className="w-full relative">
+                <thead className="sticky top-0 z-10 bg-[#0a1628]">
+                  <tr className="border-b border-white/20">
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-400">Pair</th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-400">Chain</th>
                     <th className="text-right py-3 px-4 text-sm font-semibold text-gray-400">24h Trades</th>
@@ -171,12 +190,20 @@ export default function BotPage() {
                         </span>
                       </td>
                       <td className="py-4 px-4 text-right text-white font-mono">{row.trades}</td>
-                      <td className="py-4 px-4 text-right text-white font-mono">{row.winRate}%</td>
+                      <td className="py-4 px-4 text-right font-mono">
+                        <span className={`font-semibold ${
+                          row.winRate >= 75 ? 'text-green-400' :
+                          row.winRate >= 70 ? 'text-amber-400' :
+                          'text-gray-300'
+                        }`}>
+                          {row.winRate}%
+                        </span>
+                      </td>
                       <td className="py-4 px-4 text-right text-green-500 font-mono font-semibold">
-                        +${row.profit.toFixed(2)}
+                        +${Math.round(row.profit)}
                       </td>
                       <td className="py-4 px-4 text-right text-gray-300 font-mono">
-                        ${row.avg.toFixed(2)}
+                        ${row.avg.toFixed(1)}
                       </td>
                       <td className="py-4 px-4 text-center">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-green-500/20 text-green-400">
@@ -191,19 +218,6 @@ export default function BotPage() {
             </div>
           </div>
 
-          {/* Control Button */}
-          <div className="mt-8 flex justify-center">
-            <button
-              onClick={() => setIsRunning(!isRunning)}
-              className={`px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 ${
-                isRunning
-                  ? 'bg-red-500 hover:bg-red-600'
-                  : 'bg-green-500 hover:bg-green-600'
-              }`}
-            >
-              {isRunning ? 'Pause Simulation' : 'Resume Simulation'}
-            </button>
-          </div>
         </div>
       </div>
 

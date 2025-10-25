@@ -27,10 +27,15 @@ export function useTradingSimulation() {
   const [profitData, setProfitData] = useState<ProfitDataPoint[]>([]);
   const [cumulativeProfit, setCumulativeProfit] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
-  
+  const [activeBots, setActiveBots] = useState(258);
+  const [totalTradeCount, setTotalTradeCount] = useState(0);
+  const [totalVolume, setTotalVolume] = useState(0);
+
   const tradeIdCounter = useRef(0);
   const positionIdCounter = useRef(0);
   const startTime = useRef(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+  const saveTimeoutRef = useRef<NodeJS.Timeout>();
+  const hasLoadedRef = useRef(false);
 
   // Generate random trade
   const generateTrade = useCallback((): Trade => {
@@ -93,28 +98,41 @@ export function useTradingSimulation() {
     };
   }, []);
 
-  // Initialize historical data
+  // PERSISTENCE TEMPORARILY DISABLED FOR PERFORMANCE TESTING
+  const loadState = useCallback(() => {
+    // Disabled - remove this comment to re-enable
+    // if (hasLoadedRef.current) return;
+    // hasLoadedRef.current = true;
+    // fetch('/api/bot/state')...
+  }, []);
+
+  // PERSISTENCE TEMPORARILY DISABLED FOR PERFORMANCE TESTING
+  const saveState = useCallback(() => {
+    // Disabled - no database saves happening
+  }, []);
+
+  // Initialize immediately, then load saved state in background
   useEffect(() => {
     // Generate 24 hours of profit data (hourly points)
     const historicalData: ProfitDataPoint[] = [];
     let profit = 0;
-    
+
     for (let i = 0; i < 24; i++) {
       const hour = new Date(startTime.current + i * 60 * 60 * 1000);
       const hourStr = hour.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-      
+
       // Gradual profit increase with some variance
       profit += 80 + Math.random() * 60; // $80-$140 per hour
-      
+
       historicalData.push({
         time: hourStr,
         profit: parseFloat(profit.toFixed(2))
       });
     }
-    
+
     setProfitData(historicalData);
     setCumulativeProfit(historicalData[historicalData.length - 1].profit);
-    
+
     // Generate initial trades
     const initialTrades: Trade[] = [];
     for (let i = 0; i < 15; i++) {
@@ -123,38 +141,56 @@ export function useTradingSimulation() {
       initialTrades.push(trade);
     }
     setTrades(initialTrades);
-    
+
+    // Initialize trade count with historical value (simulating 24h of trading)
+    const initialTradeCount = 1847; // Realistic starting point for 24h
+    setTotalTradeCount(initialTradeCount);
+
+    // Initialize volume based on average trade volume
+    const avgTradeVolume = 154; // Average $ per trade
+    setTotalVolume(initialTradeCount * avgTradeVolume);
+
     // Generate initial positions
     const initialPositions: Position[] = [];
     for (let i = 0; i < 6; i++) {
       initialPositions.push(generatePosition());
     }
     setPositions(initialPositions);
-  }, [generateTrade, generatePosition]);
 
-  // Add new trade simulation
+    // PERSISTENCE DISABLED - no background load
+    // setTimeout(() => loadState(), 100);
+  }, [loadState, generateTrade, generatePosition]);
+
+  // Add new trade simulation (throttled to reduce jank)
   useEffect(() => {
     if (!isRunning) return;
 
     const interval = setInterval(() => {
       const newTrade = generateTrade();
-      
+
       setTrades(prev => [newTrade, ...prev].slice(0, 50));
       setCumulativeProfit(prev => prev + newTrade.profit);
-      
+
+      // Increment total trade count
+      setTotalTradeCount(prev => prev + 1);
+
+      // Add to total volume (estimate trade volume based on profit)
+      const tradeVolume = Math.abs(newTrade.profit) * (8 + Math.random() * 12); // 8-20x multiplier
+      setTotalVolume(prev => prev + tradeVolume);
+
       // Update profit chart
       setProfitData(prev => {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         const lastPoint = prev[prev.length - 1];
-        
+
         return [...prev.slice(-23), {
           time: timeStr,
           profit: lastPoint.profit + newTrade.profit
         }];
       });
-      
-    }, 2000 + Math.random() * 3000); // 2-5 seconds
+
+    }, 3000 + Math.random() * 2000); // 3-5 seconds (throttled for smoother UX)
 
     return () => clearInterval(interval);
   }, [isRunning, generateTrade]);
@@ -172,7 +208,7 @@ export function useTradingSimulation() {
           const newUnrealizedPercent = ((newPrice - pos.entryPrice) / pos.entryPrice) * 100;
           const newUnrealizedPnL = pos.unrealizedPnL + (-0.5 + Math.random() * 1.5);
           const newDuration = Math.floor((Date.now() - pos.openedAt) / 1000);
-          
+
           return {
             ...pos,
             currentPrice: newPrice,
@@ -187,7 +223,7 @@ export function useTradingSimulation() {
           // Close a position
           updated.splice(Math.floor(Math.random() * updated.length), 1);
         }
-        
+
         if (Math.random() < 0.2 && updated.length < 8) {
           // Open a new position
           updated.push(generatePosition());
@@ -200,17 +236,58 @@ export function useTradingSimulation() {
     return () => clearInterval(interval);
   }, [isRunning, generatePosition]);
 
+  // Fluctuate active bots count slightly
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setActiveBots(prev => {
+        // Fluctuate between 255-265 (centered around 260)
+        const change = Math.random() < 0.5 ? -1 : 1;
+        const newValue = prev + change;
+
+        // Keep within bounds
+        if (newValue < 255) return 255;
+        if (newValue > 265) return 265;
+
+        return newValue;
+      });
+    }, 8000 + Math.random() * 4000); // 8-12 seconds
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  // Periodic save (every 15 seconds) - starts after 20s delay
+  useEffect(() => {
+    const startDelay = setTimeout(() => {
+      const interval = setInterval(() => {
+        saveState();
+      }, 15000);
+
+      return () => clearInterval(interval);
+    }, 20000);
+
+    return () => clearTimeout(startDelay);
+  }, [saveState]);
+
+  // Save on unmount
+  useEffect(() => {
+    return () => {
+      saveState();
+    };
+  }, [saveState]);
+
   // Calculate metrics
   const metrics: MetricData = {
     totalProfit24h: cumulativeProfit,
     profitChange: 12.4,
-    activeBots: 847,
+    activeBots: activeBots,
     winRate: 73.2,
-    totalTrades24h: trades.length,
-    avgProfitPerTrade: trades.length > 0 
-      ? trades.reduce((sum, t) => sum + t.profit, 0) / trades.length 
-      : 1.76,
-    totalVolume24h: 284392
+    totalTrades24h: totalTradeCount,
+    avgProfitPerTrade: totalTradeCount > 0
+      ? cumulativeProfit / totalTradeCount
+      : 0,
+    totalVolume24h: Math.round(totalVolume)
   };
 
   const performanceMetrics: PerformanceMetrics = {
@@ -224,8 +301,8 @@ export function useTradingSimulation() {
     },
     avgTradeDuration: 167, // 2m 47s
     successStreak: 12,
-    totalBotsRunning: 847,
-    profitableBots: 621
+    totalBotsRunning: activeBots,
+    profitableBots: Math.round(activeBots * 0.73) // ~73% profitable (matching win rate)
   };
 
   return {
@@ -238,4 +315,3 @@ export function useTradingSimulation() {
     setIsRunning
   };
 }
-

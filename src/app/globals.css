@@ -60,6 +60,17 @@
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
+/* Ensure proper height and scrolling in all contexts including iframes */
+html {
+  height: auto;
+  min-height: 100%;
+}
+
+body {
+  height: auto;
+  min-height: 100vh;
+}
+
 @theme {
   /* Shadcn/UI colors - Dark theme */
   --color-background: #0A1929;
@@ -173,6 +184,18 @@
 @layer utilities {
   body {
     font-family: var(--font-body);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 }
 
@@ -392,4 +415,57 @@ nextjs-portal {
     transform: none;
     transition: none;
   }
+
+  /* Disable animations for accessibility */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Animated glowing gradient border */
+@keyframes glowGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Conic gradient glow border (reference-inspired) */
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes rotating {
+  0% { --a: 0deg; }
+  100% { --a: 360deg; }
+}
+
+.conic-glow-border {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  background: repeating-conic-gradient(from var(--a), #0f0, #ff0, #0ff, #f0f, #0ff);
+  animation: rotating 4s linear infinite;
+}
+
+.conic-glow-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-conic-gradient(from var(--a), #0f0, #ff0, #0ff, #f0f, #0ff);
+  animation: rotating 4s linear infinite;
+  filter: blur(40px);
+  opacity: 0.75;
+  z-index: -1;
+}
+
+.conic-glow-border > .rounded-\[inherit\] {
+  border-radius: inherit;
+  background: var(--color-background-secondary);
 }

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import KBSidebar from "@/components/kb/kb-sidebar";
 import KBBreadcrumbs from "@/components/kb/kb-breadcrumbs";
 import KBTableOfContents from "@/components/kb/kb-toc";
@@ -7,6 +8,48 @@ import KBFeedbackWidget from "@/components/kb/kb-feedback-widget";
 import KBArticleNav from "@/components/kb/kb-article-nav";
 import MDXArticleRenderer from "@/components/kb/mdx-article-renderer";
 import { getArticle, getCategory, getAdjacentArticles } from "@/lib/kb-content";
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string; article: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const article = getArticle(resolvedParams.category, resolvedParams.article);
+  const category = getCategory(resolvedParams.category);
+
+  if (!article || !category) {
+    return {
+      title: "Article Not Found",
+      description: "The requested knowledge base article could not be found."
+    };
+  }
+
+  const url = `https://pov-sniper.com/knowledge-base/${resolvedParams.category}/${resolvedParams.article}`;
+
+  return {
+    title: article.title,
+    description: article.description || `Learn about ${article.title} in the P.O.V Sniper BOT knowledge base.`,
+    authors: article.author ? [{ name: article.author }] : undefined,
+    keywords: article.tags || [],
+    openGraph: {
+      title: article.title,
+      description: article.description || `Learn about ${article.title} in the P.O.V Sniper BOT knowledge base.`,
+      type: "article",
+      url,
+      article: {
+        publishedTime: article.publishedAt,
+        modifiedTime: article.updatedAt,
+        authors: article.author ? [article.author] : undefined,
+        tags: article.tags || []
+      }
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.description || `Learn about ${article.title} in the P.O.V Sniper BOT knowledge base.`,
+    },
+    alternates: {
+      canonical: url
+    }
+  };
+}
 
 export default async function ArticlePage({ params }: { params: Promise<{ category: string; article: string }> }) {
   const resolvedParams = await params;

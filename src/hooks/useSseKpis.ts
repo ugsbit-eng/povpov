@@ -13,9 +13,12 @@ export function useSseKpis<T = any>(url = "/api/stream") {
     const onErr = () => setConnected(false);
     const onMsg = (e: MessageEvent) => {
       try {
+        if (!e.data || !e.data.trim()) return;
         const j = JSON.parse(e.data);
         if (j?.payload) setData(j.payload);
-      } catch {}
+      } catch (error) {
+        // Silently ignore parse errors
+      }
     };
 
     es.addEventListener("open", onOpen);

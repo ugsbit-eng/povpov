@@ -26,25 +26,41 @@ export default function MetricCard({
   const [displayValue, setDisplayValue] = useState(0);
   const numericValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]/g, '')) : value;
 
-  // Count-up animation for numbers
+  // Smooth transition animation from current value to new value
   useEffect(() => {
     if (typeof numericValue === 'number' && !isNaN(numericValue)) {
-      const duration = 1000; // 1 second
-      const steps = 60;
-      const stepValue = numericValue / steps;
-      let current = 0;
+      const startValue = displayValue;
+      const endValue = numericValue;
+      const difference = endValue - startValue;
 
-      const timer = setInterval(() => {
-        current += stepValue;
-        if (current >= numericValue) {
-          setDisplayValue(numericValue);
-          clearInterval(timer);
+      // Skip animation if difference is tiny or zero
+      if (Math.abs(difference) < 0.01) {
+        setDisplayValue(numericValue);
+        return;
+      }
+
+      const duration = 800; // 800ms for smooth transition
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease-out cubic for natural deceleration
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const currentValue = startValue + (difference * easeProgress);
+
+        setDisplayValue(currentValue);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
         } else {
-          setDisplayValue(current);
+          setDisplayValue(endValue);
         }
-      }, duration / steps);
+      };
 
-      return () => clearInterval(timer);
+      const frame = requestAnimationFrame(animate);
+      return () => cancelAnimationFrame(frame);
     }
   }, [numericValue]);
 
@@ -112,4 +128,3 @@ export default function MetricCard({
     </motion.div>
   );
 }
-
